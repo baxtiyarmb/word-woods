@@ -447,6 +447,32 @@ h1{
 .bigemoji{font-size:110px;line-height:1.1;margin:10px 0}
 .cnt{margin:16px auto;width:84px;height:84px;border-radius:50%;background:var(--card);color:var(--text-card);border:3px solid var(--line);box-shadow:0 5px 0 var(--line);display:grid;place-items:center;font-size:36px;font-weight:700}
 
+/* balloon pop + catch it */
+.bscene,.cscene{position:relative;height:clamp(340px,60vh,540px);border:3px solid var(--line);border-radius:26px;box-shadow:0 6px 0 var(--line);overflow:hidden;margin-top:8px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.12))}
+.cscene{touch-action:none}
+.bw{position:absolute;bottom:-130px;animation:rise var(--d,8s) linear forwards}
+.balloon{position:relative;display:block;width:84px;height:104px;border:3px solid var(--line);border-radius:50% 50% 46% 46%;padding:0;cursor:pointer;animation:sway 2.2s ease-in-out infinite alternate;touch-action:manipulation;-webkit-tap-highlight-color:transparent;box-shadow:inset -8px -8px 0 rgba(0,0,0,.14)}
+.balloon::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:34px;background:var(--line);transform:translateX(-50%)}
+.bface{display:grid;place-items:center;width:58px;height:58px;margin:12px auto 0;background:#fff;border-radius:50%;font-size:34px;line-height:1;color:#2B2A4C}
+.bface .sw{width:34px;height:34px}
+.bface .shp{width:38px;height:38px}
+.bface .num{font-size:30px}
+.balloon.pop{animation:burst .28s ease-out forwards;pointer-events:none}
+.balloon.wob{animation:shake .45s}
+.balloon.glow{outline:4px solid var(--sun);outline-offset:3px}
+@keyframes rise{from{transform:translateY(0)}to{transform:translateY(calc(-1 * var(--h,420px) - 220px))}}
+@keyframes sway{from{transform:translateX(-10px) rotate(-4deg)}to{transform:translateX(10px) rotate(4deg)}}
+@keyframes burst{to{transform:scale(1.7);opacity:0}}
+.basket{position:absolute;bottom:1%;font-size:60px;line-height:1;transform:translateX(-50%);transition:left .08s linear;user-select:none}
+.basket.shk{animation:bshake .4s}
+.fall{position:absolute;transform:translate(-50%,-50%);font-size:44px;line-height:1;pointer-events:none}
+.fall .sw{width:38px;height:38px}
+.fall .shp{width:44px;height:44px}
+.fall .num{font-size:40px}
+.fall.got{animation:gotit .25s forwards}
+@keyframes gotit{to{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
+@keyframes bshake{0%,100%{transform:translateX(-50%)}25%{transform:translateX(-62%)}75%{transform:translateX(-38%)}}
+
 /* confetti */
 #fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .cf{position:absolute;top:-20px;width:12px;height:16px;border-radius:3px;border:2px solid var(--line);animation:fall linear forwards}
@@ -772,8 +798,8 @@ var STORIES=[
     {a:'🦆👋🐟',t:'The duck says {hello}!',w:{hello:'salam'}},
     {a:'🦆🐟🎉',t:'Now they are {friends}.',w:{friends:'dostlar'}}]}
 ];
-var GICON={find:'👆',listen:'👂',memory:'🃏',puzzle:'🔷',count:'🔢',coloring:'🎨',simon:'🙋',odd:'🤔',phrase:'💬',abc:'🔤',run:'🏃',feed:'🍎',story:'📖',trace:'✍️',hunt:'🔎',dress:'👑'};
-var ADV_POOL=[{g:'find',t:'mix'},{g:'listen',t:'mix'},{g:'run',t:'mix'},{g:'hunt'},{g:'feed'},{g:'memory',t:'mix'},{g:'count'},{g:'puzzle'},{g:'odd'},{g:'abc'},{g:'phrase'},{g:'trace'},{g:'story'}];
+var GICON={find:'👆',listen:'👂',memory:'🃏',puzzle:'🔷',count:'🔢',coloring:'🎨',simon:'🙋',odd:'🤔',phrase:'💬',abc:'🔤',run:'🏃',feed:'🍎',story:'📖',trace:'✍️',hunt:'🔎',dress:'👑',balloon:'🎈','catch':'🧺'};
+var ADV_POOL=[{g:'find',t:'mix'},{g:'listen',t:'mix'},{g:'run',t:'mix'},{g:'hunt'},{g:'feed'},{g:'memory',t:'mix'},{g:'count'},{g:'puzzle'},{g:'odd'},{g:'abc'},{g:'phrase'},{g:'trace'},{g:'story'},{g:'balloon'},{g:'catch'}];
 var BREAK_ACTS=[
   {e:'🙆',t:'Stretch up high!',az:'Əllərini yuxarı qaldır!'},
   {e:'🤸',t:'Touch your toes!',az:'Ayaq barmaqlarına toxun!'},
@@ -799,7 +825,9 @@ var GAMES=[
   {id:'hunt',en:'Hidden objects',az:'Axtar-tap',pic:'🔎🥄'},
   {id:'trace',en:'Trace',az:'Barmaqla yaz',pic:'✍️'},
   {id:'story',en:'Mini story',az:'Mini hekayə',pic:'📖'},
-  {id:'dress',en:'Dress up',az:'Geyindir',pic:'👑'}
+  {id:'dress',en:'Dress up',az:'Geyindir',pic:'👑'},
+  {id:'balloon',en:'Balloon pop',az:'Balonları partlat',pic:'🎈🎯'},
+  {id:'catch',en:'Catch it',az:'Tut',pic:'🧺🍎'}
 ];
 
 /* =====================================================
@@ -1072,7 +1100,7 @@ var rid=0; /* round token: timers from an abandoned round are ignored */
 var state={screen:welcomed?'home':'welcome',game:'find',topic:'mix',qs:[],i:0,stars:0,total:5,wrong:0,locked:false,
   reward:null,mem:null,pz:null,sm:null,cl:null,cnt:0,startStars:0,gate:null,vedit:null,resetArmed:false};
 
-var FREE_SCREENS={parent:1,gate:1,voice:1,sleep:1,welcome:1,reward:1,play:1,memory:1,puzzle:1,simon:1,coloring:1,hunt:1,trace:1,story:1,break:1};
+var FREE_SCREENS={parent:1,gate:1,voice:1,sleep:1,welcome:1,reward:1,play:1,memory:1,puzzle:1,simon:1,coloring:1,hunt:1,trace:1,story:1,break:1,balloon:1,catch:1};
 var NO_TIME={parent:1,gate:1,voice:1,sleep:1,welcome:1};
 function sessionDue(){return settings.session>0&&sessionSec>=settings.session*60}
 function overLimit(){
@@ -1451,7 +1479,7 @@ function render(){
   var v={welcome:viewWelcome,home:viewHome,topics:viewTopics,play:viewPlay,memory:viewMemory,puzzle:viewPuzzle,
     simon:viewSimon,coloring:viewColoring,reward:viewReward,learn:viewLearn,book:viewBook,look:viewLook,
     woods:viewWoods,gate:viewGate,parent:viewParent,voice:viewVoice,sleep:viewSleep,
-    adventure:viewAdventure,story:viewStory,trace:viewTrace,dress:viewDress,hunt:viewHunt,break:viewBreak}[state.screen];
+    adventure:viewAdventure,story:viewStory,trace:viewTrace,dress:viewDress,hunt:viewHunt,break:viewBreak,balloon:viewBalloon,catch:viewCatch}[state.screen];
   app.innerHTML=v();
   if(state.screen==='trace')initTrace();
 }
@@ -1580,6 +1608,8 @@ function startRound(game,topic,adv){
   if(game==='trace'){startTrace();return}
   if(game==='hunt'){startHunt();return}
   if(game==='story'){startStory();return}
+  if(game==='balloon'){startBalloon();return}
+  if(game==='catch'){startCatch();return}
   if(game==='count')state.qs=buildCountRound();
   else if(game==='odd')state.qs=buildOddRound();
   else if(game==='phrase')state.qs=buildPhraseRound();
@@ -2011,6 +2041,165 @@ function traceNext(){
   render();sayTrace();
 }
 
+/* --- balloon pop --- */
+var BALLOON_COLORS=['#FF8FA3','#7FD6F5','#FFD54A','#8EDB7B','#C2A8FF','#FFA96B'];
+function startBalloon(){
+  state.bl={qs:buildRound('mix'),i:0,wrong:0};
+  state.total=state.bl.qs.length;state.stars=0;state.topic='mix';
+  go('balloon');
+  var my=rid;
+  spawnBalloon();
+  setTimeout(function(){if(my===rid){sayBalloon();balloonLoop(my)}},500);
+}
+function sayBalloon(){
+  var b=state.bl;if(!b)return;
+  var t=b.qs[b.i].target;
+  sayParts(['Pop the',W(t.en)]);
+}
+function viewBalloon(){
+  var b=state.bl,t=b.qs[b.i].target;
+  return topbar(starsBox('Popped'))
+  +foxRow('<button class="btn say" data-action="bsay" aria-label="Hear it again">🔊</button><div><div class="word sm">Pop the '+t.en+'!</div><div class="az" lang="az">'+t.az+'</div></div>')
+  +'<div class="bscene" id="bscene" data-t="'+t.id+'"></div>';
+}
+function balloonLoop(my){
+  if(my!==rid||state.screen!=='balloon')return;
+  if(!state.locked)spawnBalloon();
+  setTimeout(function(){balloonLoop(my)},800);
+}
+function spawnBalloon(){
+  var sc=document.getElementById('bscene'),b=state.bl;
+  if(!sc||!b||sc.children.length>=7)return;
+  var q=b.qs[b.i],t=q.target;
+  var hasT=sc.querySelector('.balloon[data-id="'+t.id+'"]');
+  var it=(!hasT||Math.random()<0.35)?t:rnd(q.choices);
+  var h=sc.clientHeight||420,d=Math.max(4.5,8-b.i*0.6)+Math.random()*1.5;
+  var el=document.createElement('div');
+  el.className='bw';
+  el.style.left=(6+Math.random()*66).toFixed(1)+'%';
+  el.style.setProperty('--d',d.toFixed(1)+'s');
+  el.style.setProperty('--h',h+'px');
+  el.innerHTML='<button class="balloon" data-action="bpop" data-id="'+it.id+'" style="background:'+rnd(BALLOON_COLORS)+'" aria-label="Balloon"><span class="bface">'+face(it,false)+'</span></button>';
+  if(reduce){el.style.animation='none';el.style.bottom=(8+Math.random()*55)+'%'}
+  sc.appendChild(el);
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},d*1000+400);
+}
+function bpop(btn){
+  var b=state.bl;
+  if(!b||state.locked)return;
+  var q=b.qs[b.i],t=q.target,id=btn.dataset.id,sc=document.getElementById('bscene');
+  if(id===t.id){
+    state.locked=true;state.stars++;
+    if(b.wrong===0)rec(statKey(t),true);
+    btn.classList.add('pop');
+    if(sc){Array.prototype.slice.call(sc.querySelectorAll('.balloon')).forEach(function(e){if(e!==btn)e.classList.add('pop')})}
+    addStar();hopFox();sfx('pop');sfx('right');confetti(14);
+    sayParts(praiseParts(t));
+    var my=rid;
+    setTimeout(function(){
+      if(my!==rid)return;
+      b.i++;b.wrong=0;state.locked=false;
+      if(b.i>=b.qs.length)finish();
+      else{render();sayBalloon()}
+    },1800);
+  }else{
+    b.wrong++;
+    if(b.wrong===1)rec(statKey(t),false);
+    sfx('wrong');
+    btn.classList.remove('wob');void btn.offsetWidth;btn.classList.add('wob');
+    setTimeout(function(){btn.classList.remove('wob')},500);
+    var it=byId(id);
+    if(it)say('Oops, that is '+TOPICS[it.kind].named(it.en)+'.');
+    if(b.wrong>=2&&sc){
+      Array.prototype.slice.call(sc.querySelectorAll('.balloon[data-id="'+t.id+'"]')).forEach(function(e){e.classList.add('glow')});
+    }
+  }
+}
+
+/* --- catch it --- */
+function startCatch(){
+  var tops=shuffle(TOPIC_ORDER).slice(0,2);
+  var targets=tops.map(function(tp){return pickTargets(TOPICS[tp].items,1)[0]});
+  state.ct={targets:targets,k:0,caught:0,items:[],x:50,last:0,spawn:0.4,said:0};
+  state.total=6;state.stars=0;state.topic='mix';
+  go('catch');
+  var my=rid;
+  setTimeout(function(){if(my===rid)say('Catch the '+targets[0].en+'!')},500);
+  requestAnimationFrame(function(ts){catchFrame(my,ts)});
+}
+function viewCatch(){
+  var c=state.ct,t=c.targets[c.k];
+  return topbar(starsBox('Caught'))
+  +foxRow('<button class="btn say" data-action="csay" aria-label="Hear it again">🔊</button><div><div class="word sm" id="ctw">Catch the '+t.en+'!</div><div class="az" lang="az" id="cta">'+t.az+'</div></div>')
+  +'<div class="cscene" id="cscene" data-t="'+t.id+'"><div class="basket" id="basket" style="left:'+c.x+'%" aria-hidden="true">🧺</div></div>';
+}
+function setBasket(x){
+  var c=state.ct;if(!c)return;
+  c.x=Math.max(8,Math.min(92,x));
+  var bk=document.getElementById('basket');if(bk)bk.style.left=c.x+'%';
+}
+function spawnFall(sc,c){
+  var t=c.targets[c.k],pool=TOPICS[t.kind].items;
+  var hasT=c.items.some(function(f){return f.it.id===t.id});
+  var it=(!hasT||Math.random()<0.45)?t:rnd(pool.filter(function(p){return p.id!==t.id}));
+  var el=document.createElement('div');
+  el.className='fall';el.dataset.id=it.id;
+  var x=8+Math.random()*84;
+  el.style.left=x.toFixed(1)+'%';el.style.top='-8%';
+  el.innerHTML=face(it,false);
+  sc.appendChild(el);
+  c.items.push({el:el,it:it,x:x,y:-8,v:26+Math.random()*14+c.k*4,done:false});
+}
+function catchItem(f,i){
+  var c=state.ct,t=c.targets[c.k];
+  c.items.splice(i,1);f.done=true;
+  f.el.classList.add('got');
+  setTimeout(function(){if(f.el.parentNode)f.el.parentNode.removeChild(f.el)},260);
+  if(f.it.id===t.id){
+    c.caught++;state.stars++;
+    rec(statKey(t),true);
+    addStar();hopFox();sfx('right');confetti(8);
+    if(c.caught>=6){
+      state.locked=true;say(praise());
+      var my=rid;
+      setTimeout(function(){if(my===rid)finish()},1300);
+    }else if(c.caught===3){
+      c.k=1;
+      c.items.forEach(function(g){if(g.el.parentNode)g.el.parentNode.removeChild(g.el)});
+      c.items=[];
+      var t2=c.targets[1],w=document.getElementById('ctw'),a=document.getElementById('cta'),sc=document.getElementById('cscene');
+      if(w)w.textContent='Catch the '+t2.en+'!';
+      if(a)a.textContent=t2.az;
+      if(sc)sc.dataset.t=t2.id;
+      say('Now catch the '+t2.en+'!');
+    }else say(f.it.en+'!');
+  }else{
+    sfx('wrong');
+    var bk=document.getElementById('basket');
+    if(bk){bk.classList.remove('shk');void bk.offsetWidth;bk.classList.add('shk')}
+    var now=Date.now();
+    if(now-c.said>2500){c.said=now;say('Oops! That is '+TOPICS[f.it.kind].named(f.it.en)+'. Catch the '+t.en+'!')}
+  }
+}
+function catchFrame(my,ts){
+  var c=state.ct;
+  if(my!==rid||state.screen!=='catch'||!c)return;
+  var dt=c.last?Math.min(0.05,(ts-c.last)/1000):0.016;
+  c.last=ts;
+  var sc=document.getElementById('cscene');
+  if(sc&&!state.locked){
+    c.spawn-=dt;
+    if(c.spawn<=0){c.spawn=0.85+Math.random()*0.4;spawnFall(sc,c)}
+    for(var i=c.items.length-1;i>=0;i--){
+      var f=c.items[i];
+      f.y+=f.v*dt;f.el.style.top=f.y.toFixed(1)+'%';
+      if(f.y>=84&&f.y<=98&&Math.abs(f.x-c.x)<=14)catchItem(f,i);
+      else if(f.y>110){if(f.el.parentNode)f.el.parentNode.removeChild(f.el);c.items.splice(i,1)}
+    }
+  }
+  requestAnimationFrame(function(t2){catchFrame(my,t2)});
+}
+
 /* --- dress up --- */
 function viewDress(){
   var slots=[['hat','Hat','Papaq'],['face','Glasses','Eynək'],['neck','Neck','Boyun'],['side','Extra','Əlavə']];
@@ -2187,6 +2376,9 @@ app.addEventListener('click',function(e){
   else if(a==='tsay')sayTrace();
   else if(a==='tclear')render();
   else if(a==='tskip')traceNext();
+  else if(a==='bpop')bpop(b);
+  else if(a==='bsay')sayBalloon();
+  else if(a==='csay'){var cc=state.ct;if(cc)say('Catch the '+cc.targets[cc.k].en+'!')}
   else if(a==='dress')dressToggle(b.dataset.e);
   else if(a==='undress'){outfit={};store.set('ww_outfit',outfit);render()}
   else if(a==='brkdone'){sessionSec=0;go('home')}
@@ -2352,6 +2544,22 @@ function endDrag(e,drop){
 }
 app.addEventListener('pointerup',function(e){endDrag(e,true)});
 app.addEventListener('pointercancel',function(e){endDrag(e,false)});
+
+/* catch it: the basket follows the finger or mouse */
+function catchPointer(e){
+  if(state.screen!=='catch')return;
+  var sc=document.getElementById('cscene');if(!sc)return;
+  var r=sc.getBoundingClientRect();
+  if(!r.width)return;
+  setBasket((e.clientX-r.left)/r.width*100);
+}
+app.addEventListener('pointerdown',catchPointer);
+app.addEventListener('pointermove',catchPointer);
+document.addEventListener('keydown',function(e){
+  if(state.screen!=='catch'||!state.ct)return;
+  if(e.key==='ArrowLeft'){e.preventDefault();setBasket(state.ct.x-8)}
+  else if(e.key==='ArrowRight'){e.preventDefault();setBasket(state.ct.x+8)}
+});
 
 /* =====================================================
    play-time tracking and daily limit
