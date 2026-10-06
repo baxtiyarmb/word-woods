@@ -33,6 +33,9 @@
 :root[data-look="sunset"]{--sky:#FFAF87;--sky2:#FFE9B5;--cloud:#FFF6E6;--hill1:#9AD66F;--hill2:#62B36A;--line:#2B2A4C;--text-bg:#2B2A4C}
 :root[data-look="forest"]{--sky:#B9E9C6;--sky2:#EAFAD9;--cloud:#FFFFFF;--hill1:#43A56D;--hill2:#2E8454;--line:#2B2A4C;--text-bg:#2B2A4C}
 :root[data-look="night"]{--sky:#171B57;--sky2:#2B2F80;--cloud:#3A3F94;--hill1:#2F8F6A;--hill2:#20704F;--line:#0C0E33;--text-bg:#FFFFFF}
+:root[data-look="ocean"]{--sky:#7FE0F0;--sky2:#C9F3FF;--cloud:#FFFFFF;--hill1:#3FB6A8;--hill2:#2A9488;--line:#2B2A4C;--text-bg:#2B2A4C}
+:root[data-look="space"]{--sky:#1B1038;--sky2:#4A2E8A;--cloud:#5B44A8;--hill1:#5B3FA0;--hill2:#3D2A78;--line:#0C0A24;--text-bg:#FFFFFF}
+:root[data-look="rainbow"]{--sky:#FFD1E8;--sky2:#FFF1B8;--cloud:#FFFFFF;--hill1:#9AD66F;--hill2:#62B36A;--line:#2B2A4C;--text-bg:#2B2A4C}
 
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
 *,*::before,*::after{box-sizing:border-box}
@@ -371,6 +374,79 @@ h1{
 }
 .toast.show{opacity:1;transform:translateX(-50%)}
 
+/* compact home tiles */
+.gtiles{gap:10px}
+.gt{flex-direction:row;justify-content:flex-start;gap:10px;padding:10px 12px;font-size:16px;text-align:left}
+.gt .gp{font-size:30px;height:auto;min-width:40px;justify-content:center}
+.gt .gp b{font-size:28px}
+.gt .gp svg{width:28px;height:28px}
+.gtt{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.gt small{font-size:12px}
+.adv{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 16px;margin-bottom:16px;font-size:22px;background:linear-gradient(135deg,var(--sun),#FFB86B)}
+.advi{font-size:40px;line-height:1}
+.advt small{display:block;font-size:14px;font-weight:500;opacity:.85}
+.wide.primary{background:var(--sun);font-size:24px;padding:16px}
+.btn:disabled{opacity:.45;pointer-events:none}
+.btn.lockd,.lk.lockd{opacity:.55}
+
+/* dress-up avatar */
+.av{position:relative;display:inline-block;line-height:1}
+.av i{position:absolute;font-style:normal;line-height:1;pointer-events:none}
+.o-hat{left:50%;top:-24%;transform:translateX(-50%);font-size:.56em}
+.o-face{left:50%;top:34%;transform:translateX(-50%);font-size:.5em}
+.o-neck{left:50%;top:74%;transform:translateX(-50%);font-size:.42em}
+.o-side{left:78%;top:30%;font-size:.5em}
+.dstage{display:grid;place-items:center;padding:40px 0 16px;background:rgba(255,255,255,.55);border:3px solid var(--line);border-radius:28px;margin-top:8px}
+.dt .tw{font-size:14px}
+
+/* run the road */
+.doors{animation:approach .5s ease-out}
+.door{aspect-ratio:3/4;border-radius:44px 44px 14px 14px;background:#E9BE8E}
+.door .sw{width:60%;height:auto;aspect-ratio:1/1}
+.door .shp{width:62%;height:auto}
+.door .num{font-size:clamp(40px,13vw,70px)}
+.lane{height:34px;margin-top:22px;border:3px solid var(--line);border-radius:18px;background:repeating-linear-gradient(90deg,#6D6C93 0 40px,#8D8CB3 40px 80px);background-size:160px 100%}
+.lane.go{animation:lane .9s linear}
+@keyframes lane{to{background-position:-160px 0}}
+@keyframes approach{from{transform:translateY(-36px) scale(.78);opacity:0}}
+
+/* feed the pet */
+.feed .ask .fox{font-size:112px}
+.choice.fly{pointer-events:none;z-index:20;transition:transform .55s ease-in,opacity .55s}
+
+/* mini story */
+.sart{font-size:84px;text-align:center;margin:10px 0;line-height:1.1}
+.stxt{display:flex;align-items:center;gap:14px;background:var(--card);color:var(--text-card);border:3px solid var(--line);border-radius:26px;box-shadow:0 6px 0 var(--line);padding:14px 16px;margin-bottom:18px}
+.stxt p{margin:0;font-size:24px;font-weight:600;line-height:1.35}
+.kw{color:#5B3FD6;border-bottom:3px dotted #5B3FD6;cursor:pointer}
+.sqt{font-size:22px;font-weight:700;text-align:center;margin:6px 0 12px}
+
+/* tracing */
+.tbox{position:relative;width:100%;max-width:340px;aspect-ratio:1/1;margin:14px auto 0;background:var(--card);border:3px solid var(--line);border-radius:26px;box-shadow:0 6px 0 var(--line);overflow:hidden}
+.tbox canvas{position:absolute;inset:0;width:100%;height:100%}
+#tcv{touch-action:none;cursor:crosshair}
+
+/* hidden objects */
+.hscene{position:relative;aspect-ratio:4/3;border:3px solid var(--line);border-radius:26px;box-shadow:0 6px 0 var(--line);overflow:hidden}
+.obj{position:absolute;transform:translate(-50%,-50%);font-size:clamp(32px,9.5vw,52px);line-height:1;background:none;border:0;padding:4px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.obj.found{background:rgba(194,247,212,.92);border-radius:50%;outline:3px solid #2FBF71;pointer-events:none}
+.obj.shake{animation:shakeo .45s}
+.obj.hint{animation:wigo .9s infinite}
+@keyframes shakeo{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(-64%,-50%)}75%{transform:translate(-36%,-50%)}}
+@keyframes wigo{0%,100%{transform:translate(-50%,-50%) rotate(0)}25%{transform:translate(-50%,-50%) rotate(-9deg)}75%{transform:translate(-50%,-50%) rotate(9deg)}}
+
+/* adventure map + break */
+.amap{display:grid;gap:10px;margin:14px 0}
+.stop{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.7);border:3px solid var(--line);border-radius:22px;padding:10px 14px;color:var(--text-card);font-size:20px;font-weight:700;opacity:.78}
+.stop .sic{font-size:34px;width:44px;text-align:center;line-height:1}
+.stop small{display:block;font-size:13px;font-weight:500;color:var(--muted-card)}
+.stop.now{opacity:1;background:var(--sun);box-shadow:0 5px 0 var(--line)}
+.stop.done{opacity:1;background:#C2F7D4}
+.brk{text-align:center;padding-top:20px}
+.brk h2{font-size:38px;margin:0}
+.bigemoji{font-size:110px;line-height:1.1;margin:10px 0}
+.cnt{margin:16px auto;width:84px;height:84px;border-radius:50%;background:var(--card);color:var(--text-card);border:3px solid var(--line);box-shadow:0 5px 0 var(--line);display:grid;place-items:center;font-size:36px;font-weight:700}
+
 /* confetti */
 #fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .cf{position:absolute;top:-20px;width:12px;height:16px;border-radius:3px;border:2px solid var(--line);animation:fall linear forwards}
@@ -638,7 +714,72 @@ var LOOKS=[
   {id:'candy',en:'Candy',az:'Konfet',bg:'linear-gradient(180deg,#FFC4E4,#E6D8FF)',tc:'#2B2A4C'},
   {id:'sunset',en:'Sunset',az:'Qürub',bg:'linear-gradient(180deg,#FFAF87,#FFE9B5)',tc:'#2B2A4C'},
   {id:'forest',en:'Forest',az:'Meşə',bg:'linear-gradient(180deg,#B9E9C6,#EAFAD9)',tc:'#2B2A4C'},
-  {id:'night',en:'Night',az:'Gecə',bg:'linear-gradient(180deg,#171B57,#2B2F80)',tc:'#FFFFFF'}
+  {id:'night',en:'Night',az:'Gecə',bg:'linear-gradient(180deg,#171B57,#2B2F80)',tc:'#FFFFFF'},
+  {id:'ocean',en:'Ocean',az:'Okean',bg:'linear-gradient(180deg,#7FE0F0,#C9F3FF)',tc:'#2B2A4C',special:true},
+  {id:'space',en:'Space',az:'Kosmos',bg:'linear-gradient(180deg,#1B1038,#4A2E8A)',tc:'#FFFFFF',special:true},
+  {id:'rainbow',en:'Rainbow',az:'Göy qurşağı',bg:'linear-gradient(180deg,#FFD1E8,#FFF1B8 50%,#C9F3FF)',tc:'#2B2A4C',special:true}
+];
+
+/* ---------- dress-up, hidden objects, stories, adventure, breaks ---------- */
+var DRESS=[
+  {slot:'hat',e:'🎩',at:0,en:'hat',az:'papaq'},
+  {slot:'hat',e:'👑',at:10,en:'crown',az:'tac'},
+  {slot:'hat',e:'🧢',at:20,en:'cap',az:'kepka'},
+  {slot:'hat',e:'🎓',at:35,en:'graduation cap',az:'məzun papağı'},
+  {slot:'hat',e:'⛑️',at:55,en:'helmet',az:'dəbilqə'},
+  {slot:'face',e:'🕶️',at:5,en:'sunglasses',az:'gün eynəyi'},
+  {slot:'face',e:'👓',at:15,en:'glasses',az:'eynək'},
+  {slot:'neck',e:'🧣',at:8,en:'scarf',az:'şərf'},
+  {slot:'neck',e:'🎀',at:25,en:'bow',az:'bant'},
+  {slot:'neck',e:'📿',at:45,en:'necklace',az:'boyunbağı'},
+  {slot:'side',e:'🎈',at:3,en:'balloon',az:'balon'},
+  {slot:'side',e:'🦋',at:18,en:'butterfly',az:'kəpənək'},
+  {slot:'side',e:'🌸',at:30,en:'flower',az:'çiçək'},
+  {slot:'side',e:'⭐',at:50,en:'star',az:'ulduz'},
+  {slot:'side',e:'🍭',at:70,en:'lollipop',az:'lolipop'}
+];
+var HUNT=[
+  {id:'kitchen',bg:'#FFE9C7',items:[
+    {e:'🥄',en:'spoon',az:'qaşıq'},{e:'🍴',en:'fork',az:'çəngəl'},{e:'🍽️',en:'plate',az:'boşqab'},{e:'☕',en:'cup',az:'fincan'},
+    {e:'🥛',en:'milk',az:'süd'},{e:'🍎',en:'apple',az:'alma'},{e:'🍌',en:'banana',az:'banan'},{e:'🍞',en:'bread',az:'çörək'},
+    {e:'🧀',en:'cheese',az:'pendir'},{e:'🥚',en:'egg',az:'yumurta'},{e:'🍳',en:'pan',az:'tava'},{e:'🧂',en:'salt',az:'duz'},
+    {e:'🥕',en:'carrot',az:'yerkökü'},{e:'🍕',en:'pizza',az:'pizza'}]},
+  {id:'bedroom',bg:'#E4DAFF',items:[
+    {e:'🛏️',en:'bed',az:'çarpayı'},{e:'🧸',en:'teddy bear',az:'ayıcıq'},{e:'📕',en:'book',az:'kitab'},{e:'💡',en:'lamp',az:'lampa'},
+    {e:'👕',en:'shirt',az:'köynək'},{e:'🧦',en:'sock',az:'corab'},{e:'👟',en:'shoe',az:'ayaqqabı'},{e:'🎒',en:'bag',az:'çanta'},
+    {e:'⏰',en:'clock',az:'saat'},{e:'🖼️',en:'picture',az:'şəkil'},{e:'🚪',en:'door',az:'qapı'},{e:'🧢',en:'cap',az:'kepka'},
+    {e:'🎈',en:'balloon',az:'balon'},{e:'⚽',en:'ball',az:'top'}]},
+  {id:'garden',bg:'#CFF3C0',items:[
+    {e:'🌳',en:'tree',az:'ağac'},{e:'🌸',en:'flower',az:'çiçək'},{e:'🦋',en:'butterfly',az:'kəpənək'},{e:'🐝',en:'bee',az:'arı'},
+    {e:'🐌',en:'snail',az:'ilbiz'},{e:'🐛',en:'caterpillar',az:'tırtıl'},{e:'🍄',en:'mushroom',az:'göbələk'},{e:'🐞',en:'ladybug',az:'xallı böcək'},
+    {e:'☀️',en:'sun',az:'günəş'},{e:'🌈',en:'rainbow',az:'göy qurşağı'},{e:'🐦',en:'bird',az:'quş'},{e:'🥕',en:'carrot',az:'yerkökü'},
+    {e:'🌻',en:'sunflower',az:'günəbaxan'},{e:'🐇',en:'rabbit',az:'dovşan'}]}
+];
+var STORIES=[
+  {title:'The Little Fox',az:'Kiçik tülkü',scenes:[
+    {a:'🦊🌳',t:'A little {fox} lives in the {woods}.',w:{fox:'tülkü',woods:'meşə'}},
+    {a:'🦊🍎',t:'The fox is {hungry}. He wants an {apple}.',w:{hungry:'ac',apple:'alma'},q:{t:'Where is the apple?',o:['🍌','🍎'],ok:1}},
+    {a:'🦊🌳🍎',t:'He sees a red {apple} on the {tree}.',w:{apple:'alma',tree:'ağac'}},
+    {a:'🦊😋',t:'Yum! The fox is {happy}.',w:{happy:'xoşbəxt'}}]},
+  {title:'The Rainy Day',az:'Yağışlı gün',scenes:[
+    {a:'☁️🌧️',t:'It is a {rainy} {day}.',w:{rainy:'yağışlı',day:'gün'}},
+    {a:'🐸☔',t:'A {frog} has an {umbrella}.',w:{frog:'qurbağa',umbrella:'çətir'},q:{t:'Where is the umbrella?',o:['☔','🎈'],ok:0}},
+    {a:'🌤️🌈',t:'The rain stops. Look! A {rainbow}!',w:{rainbow:'göy qurşağı'}},
+    {a:'🐸💃',t:'The frog is {happy}.',w:{happy:'xoşbəxt'}}]},
+  {title:'The Duck and the Fish',az:'Ördək və balıq',scenes:[
+    {a:'🦆🌊',t:'A {duck} swims in the {water}.',w:{duck:'ördək',water:'su'}},
+    {a:'🦆🐟',t:'The duck sees a yellow {fish}.',w:{fish:'balıq'},q:{t:'Where is the fish?',o:['🐱','🐟'],ok:1}},
+    {a:'🦆👋🐟',t:'The duck says {hello}!',w:{hello:'salam'}},
+    {a:'🦆🐟🎉',t:'Now they are {friends}.',w:{friends:'dostlar'}}]}
+];
+var GICON={find:'👆',listen:'👂',memory:'🃏',puzzle:'🔷',count:'🔢',coloring:'🎨',simon:'🙋',odd:'🤔',phrase:'💬',abc:'🔤',run:'🏃',feed:'🍎',story:'📖',trace:'✍️',hunt:'🔎',dress:'👑'};
+var ADV_POOL=[{g:'find',t:'mix'},{g:'listen',t:'mix'},{g:'run',t:'mix'},{g:'hunt'},{g:'feed'},{g:'memory',t:'mix'},{g:'count'},{g:'puzzle'},{g:'odd'},{g:'abc'},{g:'phrase'},{g:'trace'},{g:'story'}];
+var BREAK_ACTS=[
+  {e:'🙆',t:'Stretch up high!',az:'Əllərini yuxarı qaldır!'},
+  {e:'🤸',t:'Touch your toes!',az:'Ayaq barmaqlarına toxun!'},
+  {e:'🌬️',t:'Take a deep breath!',az:'Dərin nəfəs al!'},
+  {e:'🙌',t:'Shake your hands!',az:'Əllərini silkələ!'},
+  {e:'💧',t:'Drink some water!',az:'Bir az su iç!'}
 ];
 
 /* game list for the home screen (pic is HTML) */
@@ -652,7 +793,13 @@ var GAMES=[
   {id:'simon',en:'Simon says',az:'Simon deyir',pic:'🙋👏'},
   {id:'odd',en:'Odd one out',az:'Hansı artıqdır?',pic:'🍎🍎🐶'},
   {id:'phrase',en:'Two words',az:'Cümlə hissəsi',pic:'🔴🐱'},
-  {id:'abc',en:'ABC',az:'Əlifba',pic:'<b>Aa</b>'}
+  {id:'abc',en:'ABC',az:'Əlifba',pic:'<b>Aa</b>'},
+  {id:'run',en:'Run the road',az:'Yol boyu qaç',pic:'🏃🚪'},
+  {id:'feed',en:'Feed the pet',az:'Heyvanı yedizdir',pic:'🍎😋'},
+  {id:'hunt',en:'Hidden objects',az:'Axtar-tap',pic:'🔎🥄'},
+  {id:'trace',en:'Trace',az:'Barmaqla yaz',pic:'✍️'},
+  {id:'story',en:'Mini story',az:'Mini hekayə',pic:'📖'},
+  {id:'dress',en:'Dress up',az:'Geyindir',pic:'👑'}
 ];
 
 /* =====================================================
@@ -673,6 +820,13 @@ if(charIdx<0||charIdx>=CHARS.length)charIdx=0;
 var look=String(store.get('ww_look','sky'));
 if(!LOOKS.some(function(l){return l.id===look}))look='sky';
 var settings={limit:Number(store.get('ww_limit',0))||0};
+(function(){var sv=store.get('ww_session',10);settings.session=(sv===0)?0:(Number(sv)||10)})();
+var outfit=store.get('ww_outfit',{});
+if(!outfit||typeof outfit!=='object'||Array.isArray(outfit))outfit={};
+var gifts=store.get('ww_gifts',[]);if(!Array.isArray(gifts))gifts=[];
+var unlockedLooks=store.get('ww_ul',[]);if(!Array.isArray(unlockedLooks))unlockedLooks=[];
+var advData=store.get('ww_adv',null);
+var sessionSec=0;
 var countLvl=Number(store.get('ww_clvl',1))||1;
 var stats=store.get('ww_stats',null);
 if(!stats||typeof stats!=='object')stats={};
@@ -702,6 +856,15 @@ function pickTargets(items,n){
     .sort(function(a,b){return b.s-a.s}).slice(0,n).map(function(x){return x.it});
 }
 function char(){return CHARS[charIdx]}
+function avatar(){
+  return '<span class="av">'+char()
+    +(outfit.hat?'<i class="o-hat">'+outfit.hat+'</i>':'')
+    +(outfit.face?'<i class="o-face">'+outfit.face+'</i>':'')
+    +(outfit.neck?'<i class="o-neck">'+outfit.neck+'</i>':'')
+    +(outfit.side?'<i class="o-side">'+outfit.side+'</i>':'')+'</span>';
+}
+function dressOpen(it){return totalStars>=it.at||gifts.indexOf(it.e)>-1}
+function dayNum(){return Math.floor(Date.now()/86400000)}
 function applyLook(){
   var r=document.documentElement;
   if(look==='sky')r.removeAttribute('data-look');else r.setAttribute('data-look',look);
@@ -909,9 +1072,9 @@ var rid=0; /* round token: timers from an abandoned round are ignored */
 var state={screen:welcomed?'home':'welcome',game:'find',topic:'mix',qs:[],i:0,stars:0,total:5,wrong:0,locked:false,
   reward:null,mem:null,pz:null,sm:null,cl:null,cnt:0,startStars:0,gate:null,vedit:null,resetArmed:false};
 
-var GAME_SCREENS={play:1,memory:1,puzzle:1,simon:1,coloring:1};
-var FREE_SCREENS={parent:1,gate:1,voice:1,sleep:1,welcome:1,reward:1,play:1,memory:1,puzzle:1,simon:1,coloring:1};
+var FREE_SCREENS={parent:1,gate:1,voice:1,sleep:1,welcome:1,reward:1,play:1,memory:1,puzzle:1,simon:1,coloring:1,hunt:1,trace:1,story:1,break:1};
 var NO_TIME={parent:1,gate:1,voice:1,sleep:1,welcome:1};
+function sessionDue(){return settings.session>0&&sessionSec>=settings.session*60}
 function overLimit(){
   var lim=settings.limit;if(!lim)return false;
   var d=day();
@@ -946,12 +1109,12 @@ function starsHTML(){
 }
 function starsBox(label){return '<div class="stars" aria-label="'+label+'">'+starsHTML()+'</div>'}
 function foxRow(bubbleHTML,style){
-  return '<div class="ask"><div class="fox" id="fox" aria-hidden="true">'+char()+'</div><div class="bubble"'+(style?' style="'+style+'"':'')+'>'+bubbleHTML+'</div></div>';
+  return '<div class="ask"><div class="fox" id="fox" aria-hidden="true">'+avatar()+'</div><div class="bubble"'+(style?' style="'+style+'"':'')+'>'+bubbleHTML+'</div></div>';
 }
 
 function viewWelcome(){
   return ''
-  +'<div class="hero" style="margin-top:34px"><div class="fox" aria-hidden="true">'+char()+'</div>'
+  +'<div class="hero" style="margin-top:34px"><div class="fox" aria-hidden="true">'+avatar()+'</div>'
   +'<button class="bubble btn" data-action="askname">Hi! What is your name?</button></div>'
   +'<h1>Word Woods</h1>'
   +'<input class="inp" id="nameIn" data-role="name" maxlength="14" placeholder="Name" autocomplete="off" aria-label="Name" value="'+esc(name)+'" style="margin-top:24px">'
@@ -962,14 +1125,15 @@ function viewWelcome(){
 function viewHome(){
   var greet=name?('Hi, '+esc(name)+'! Let\'s play!'):'Hi! Let\'s play!';
   var tiles=GAMES.map(function(g,i){
-    return '<button class="btn gt gc'+(i%5)+'" data-action="game" data-game="'+g.id+'"><span class="gp" aria-hidden="true">'+g.pic+'</span>'+g.en+'<small lang="az">'+g.az+'</small></button>';
+    return '<button class="btn gt gc'+(i%5)+'" data-action="game" data-game="'+g.id+'"><span class="gp" aria-hidden="true">'+g.pic+'</span><span class="gtt">'+g.en+'<small lang="az">'+g.az+'</small></span></button>';
   }).join('');
   return ''
   +'<div class="bar"><div class="grp"><button class="btn ibtn" data-action="look" aria-label="My look">🎨</button>'
   +'<button class="btn ibtn" data-action="gate" aria-label="Parents">🔒</button></div>'+muteBtn()+'</div>'
-  +'<div class="hero"><div class="fox" aria-hidden="true">'+char()+'</div><button class="bubble btn" data-action="hello">'+greet+'</button></div>'
+  +'<div class="hero"><div class="fox" aria-hidden="true">'+avatar()+'</div><button class="bubble btn" data-action="hello">'+greet+'</button></div>'
   +'<h1>Word Woods</h1>'
   +'<p class="sub" lang="az">İngilis sözlərini oyunla öyrən!</p>'
+  +advButton()
   +'<div class="gtiles">'+tiles+'</div>'
   +'<div class="row">'
   +'<button class="btn" data-action="learn">👀 Listen &amp; learn</button>'
@@ -996,18 +1160,21 @@ function viewTopics(){
 }
 
 function choiceHTML(c,i){
-  var cls='btn choice'+(c.kind==='numbers'?' numc':'');
-  return '<button class="'+cls+'" data-action="pick" data-idx="'+i+'" aria-label="Choice '+(i+1)+'">'+face(c,state.game!=='count')+'</button>';
+  var cls='btn choice'+(c.kind==='numbers'?' numc':'')+(state.game==='run'?' door':'');
+  return '<button class="'+cls+'" data-action="pick" data-idx="'+i+'" aria-label="Choice '+(i+1)+'">'+face(c,state.game!=='count'&&state.game!=='run')+'</button>';
 }
 function viewPlay(){
-  var q=state.qs[state.i],t=q.target,blind=state.game==='listen';
+  var q=state.qs[state.i],t=q.target,g=state.game,blind=g==='listen';
   var w=q.bubWord!==undefined?q.bubWord:(blind?'?':t.en);
   var z=q.bubAz!==undefined?q.bubAz:(blind?'Dinlə!':t.az);
   var wordHTML='<div class="word'+(q.small?' sm':'')+'"'+(blind?' id="wd"':'')+'>'+w+'</div><div class="az" lang="az"'+(blind?' id="azw"':'')+'>'+z+'</div>';
-  return topbar(starsBox('Stars'))
+  var chs=q.choices.map(choiceHTML).join('');
+  var body=g==='run'
+    ?'<div class="road"><div class="choices doors">'+chs+'</div><div class="lane" id="lane"></div></div>'
+    :(q.visual?'<div class="stagebox">'+q.visual+'</div>':'')+'<div class="choices'+(q.choices.length===4?' four':'')+'">'+chs+'</div>';
+  return '<div class="'+(g==='feed'?'feed':'')+'">'+topbar(starsBox('Stars'))
   +foxRow('<button class="btn say" data-action="ask" aria-label="Hear it again">🔊</button><div>'+wordHTML+'</div>')
-  +(q.visual?'<div class="stagebox">'+q.visual+'</div>':'')
-  +'<div class="choices'+(q.choices.length===4?' four':'')+'">'+q.choices.map(choiceHTML).join('')+'</div>';
+  +body+'</div>';
 }
 
 function cardHTML(it,i){
@@ -1072,6 +1239,7 @@ function viewReward(){
   +'<p class="big">'+s.en+'</p>'
   +'<p class="rsub" lang="az">'+s.az+(r.all?' — bütün stikerlər toplandı! 🎉':'')+'</p>'
   +(r.news&&r.news.length?'<p class="rsub">🎉 <span lang="az">Mənim meşəmdə yeni:</span> '+r.news.join(' ')+'</p>':'')
+  +(r.surprise?'<p class="rsub">🎁 <span lang="az">Günün sürprizi:</span> '+r.surprise.e+' <span lang="az">'+r.surprise.txt+'</span></p>':'')
   +'<div class="actions">'
   +'<button class="btn primary" data-action="again">▶ Play again</button>'
   +'<div class="row3"><button class="btn" data-action="book">📒 Stickers</button><button class="btn" data-action="woods">🌳 My Woods</button><button class="btn" data-action="home">🏠 Home</button></div>'
@@ -1112,7 +1280,8 @@ function viewLook(){
     return '<button class="btn cbtn'+(i===charIdx?' sel':'')+'" data-action="char" data-i="'+i+'" aria-label="Character '+(i+1)+'">'+c+'</button>';
   }).join('');
   var looks=LOOKS.map(function(l){
-    return '<button class="btn lk'+(l.id===look?' sel':'')+'" data-action="setlook" data-id="'+l.id+'" style="background:'+l.bg+';color:'+l.tc+'">'+l.en+'<small lang="az">'+l.az+'</small></button>';
+    var locked=l.special&&unlockedLooks.indexOf(l.id)<0;
+    return '<button class="btn lk'+(l.id===look?' sel':'')+(locked?' lockd':'')+'" data-action="setlook" data-id="'+l.id+'" style="background:'+l.bg+';color:'+l.tc+'">'+(locked?'🔒 ':'')+l.en+'<small lang="az">'+l.az+'</small></button>';
   }).join('');
   return topbar()
   +'<div class="title">My look<small lang="az">Mənim görünüşüm</small></div>'
@@ -1199,6 +1368,7 @@ function viewParent(){
     return '<button class="btn'+(v===lim?' sel':'')+'" data-action="limit" data-v="'+v+'">'+(v?v+' dəq':'Yoxdur')+'</button>';
   }).join('');
   var left=lim?Math.max(0,Math.ceil(((lim+(d.x||0))*60-d.s)/60)):0;
+  var sessOpts=[0,5,8,10,15].map(function(v){return '<button class="btn'+(v===settings.session?' sel':'')+'" data-action="sess" data-v="'+v+'">'+(v?v+' dəq':'Yoxdur')+'</button>'}).join('');
   var recorded=Object.keys(clips).length;
   return topbar()
   +'<div class="title">Valideyn paneli<small>Yalnız bu cihazın məlumatları</small></div>'
@@ -1213,6 +1383,7 @@ function viewParent(){
   +'<div class="pcard"><h3>🎮 Oyunlar</h3>'+(gl||'<p>Hələ oyun oynanılmayıb.</p>')+'</div>'
   +'<div class="pcard"><h3>⏰ Gündəlik vaxt limiti</h3><div class="opts">'+opts+'</div>'
   +(lim?'<p>Bu gün qalan vaxt: <b>'+left+' dəq</b></p><div class="opts"><button class="btn" data-action="extend">+10 dəq əlavə et</button></div>':'<p>Limit söndürülüb.</p>')+'</div>'
+  +'<div class="pcard"><h3>🧘 Qısa seanslar</h3><p>Seçilmiş müddət keçəndən sonra oyun 45 saniyəlik fasilə (hərəkət və su) təklif edir.</p><div class="opts">'+sessOpts+'</div></div>'
   +'<div class="pcard"><h3>🎙️ Sizin səsinizlə sözlər</h3><p>Yazılmış söz: <b>'+recorded+'</b></p>'
   +'<p>Sözləri öz səsinizlə yazın, oyun robot səsi əvəzinə sizin səsinizi çalacaq.</p>'
   +'<div class="opts"><button class="btn" data-action="voice">Səs yazılarına keç</button></div></div>'
@@ -1279,17 +1450,22 @@ function viewSleep(){
 function render(){
   var v={welcome:viewWelcome,home:viewHome,topics:viewTopics,play:viewPlay,memory:viewMemory,puzzle:viewPuzzle,
     simon:viewSimon,coloring:viewColoring,reward:viewReward,learn:viewLearn,book:viewBook,look:viewLook,
-    woods:viewWoods,gate:viewGate,parent:viewParent,voice:viewVoice,sleep:viewSleep}[state.screen];
+    woods:viewWoods,gate:viewGate,parent:viewParent,voice:viewVoice,sleep:viewSleep,
+    adventure:viewAdventure,story:viewStory,trace:viewTrace,dress:viewDress,hunt:viewHunt,break:viewBreak}[state.screen];
   app.innerHTML=v();
+  if(state.screen==='trace')initTrace();
 }
 function go(screen){
   if(overLimit()&&!FREE_SCREENS[screen])screen='sleep';
+  else if(sessionDue()&&!FREE_SCREENS[screen])screen='break';
   state.screen=screen;
   stopSpeech();
   if(screen==='gate')newGate();
+  if(screen==='break')state.brk={t:45,k:0,done:false};
   render();
   window.scrollTo(0,0);
   if(screen==='sleep')say('Time is up! See you tomorrow!');
+  if(screen==='break')say(BREAK_ACTS[0].t);
 }
 
 /* =====================================================
@@ -1374,18 +1550,42 @@ function buildAbcRound(){
 /* =====================================================
    game flow
    ===================================================== */
-function startRound(game,topic){
+function buildRunRound(){
+  return buildRound('mix').map(function(q){
+    var t=q.target;
+    q.say=function(){return ['Run to the',W(t.en),'door!']};
+    return q;
+  });
+}
+function buildFeedRound(){
+  return pickTargets(FRUITS,5).map(function(t){
+    var others=shuffle(FRUITS.filter(function(p){return p.id!==t.id})).slice(0,2);
+    var a=art(t.en).split(' ')[0];
+    return {target:t,choices:shuffle([t].concat(others)),
+      say:function(){return ['I am hungry! I want '+a,W(t.en)]},
+      bubWord:'I want '+art(t.en),bubAz:t.az,small:true,
+      explain:function(){return [W(t.en),'Yum yum! Thank you!']}};
+  });
+}
+function startRound(game,topic,adv){
   if(overLimit()){go('sleep');return}
+  if(sessionDue()){go('break');return}
+  if(!adv)state.adv=null;
   rid++;
   state.game=game;state.topic=topic;state.stars=0;state.wrong=0;state.locked=false;state.startStars=totalStars;
   if(game==='memory'){startMemory(topic);return}
   if(game==='puzzle'){startPuzzle();return}
   if(game==='simon'){startSimon();return}
   if(game==='coloring'){startColoring();return}
+  if(game==='trace'){startTrace();return}
+  if(game==='hunt'){startHunt();return}
+  if(game==='story'){startStory();return}
   if(game==='count')state.qs=buildCountRound();
   else if(game==='odd')state.qs=buildOddRound();
   else if(game==='phrase')state.qs=buildPhraseRound();
   else if(game==='abc')state.qs=buildAbcRound();
+  else if(game==='run')state.qs=buildRunRound();
+  else if(game==='feed')state.qs=buildFeedRound();
   else state.qs=buildRound(topic);
   state.i=0;state.total=state.qs.length;state.cnt=0;
   go('play');
@@ -1445,8 +1645,10 @@ function onWrong(el,c,q){
 function onCorrect(el,q){
   state.locked=true;state.stars++;
   if(state.wrong===0)rec(statKey(q.target),true);
-  el.classList.remove('hint');el.classList.add('right');
+  el.classList.remove('hint');el.classList.add(state.game==='feed'?'fly':'right');
   addStar();hopFox();
+  if(state.game==='feed')feedFly(el);
+  if(state.game==='run'){var ln=document.getElementById('lane');if(ln)ln.classList.add('go')}
   if(state.game==='listen'){
     var wd=document.getElementById('wd'),azw=document.getElementById('azw');
     if(wd)wd.textContent=q.target.en;
@@ -1603,11 +1805,321 @@ function finishColoring(){
   finish();
 }
 
+/* --- feed the pet --- */
+function feedFly(el){
+  var fox=document.getElementById('fox');if(!fox||!el)return;
+  var a=el.getBoundingClientRect(),b=fox.getBoundingClientRect();
+  var dx=b.left+b.width/2-(a.left+a.width/2),dy=b.top+b.height/2-(a.top+a.height/2);
+  setTimeout(function(){el.style.transform='translate('+dx+'px,'+dy+'px) scale(.25)';el.style.opacity='0'},30);
+}
+
+/* --- hidden objects --- */
+function startHunt(){
+  var sc=rnd(HUNT),cells=[];
+  for(var r=0;r<3;r++)for(var c=0;c<5;c++)cells.push([c,r]);
+  var cs=shuffle(cells);
+  var objs=shuffle(sc.items).map(function(it,i){
+    return {e:it.e,en:it.en,az:it.az,x:(cs[i][0]+0.5)/5*100+(Math.random()*8-4),y:(cs[i][1]+0.5)/3*100+(Math.random()*10-5)};
+  });
+  var targets=shuffle(objs.map(function(_,i){return i})).slice(0,5);
+  state.hn={sc:sc,objs:objs,targets:targets,k:0,found:{},wrong:0};
+  state.total=5;state.stars=0;state.topic='mix';
+  go('hunt');
+  var my=rid;
+  setTimeout(function(){if(my===rid)say('Find the '+objs[targets[0]].en+'!')},500);
+}
+function viewHunt(){
+  var h=state.hn,t=h.objs[h.targets[h.k]];
+  var objs=h.objs.map(function(o,i){
+    return '<button class="obj'+(h.found[i]?' found':'')+'" data-action="obj" data-i="'+i+'" style="left:'+o.x.toFixed(1)+'%;top:'+o.y.toFixed(1)+'%" aria-label="Object">'+o.e+'</button>';
+  }).join('');
+  return topbar(starsBox('Found'))
+  +foxRow('<button class="btn say" data-action="hsay" aria-label="Hear it again">🔊</button><div><div class="word sm">Find the '+t.en+'!</div><div class="az" lang="az">'+t.az+'</div></div>')
+  +'<div class="hscene" style="background:'+h.sc.bg+'">'+objs+'</div>';
+}
+function huntTap(i,el){
+  var h=state.hn;
+  if(!h||state.locked||h.found[i])return;
+  var tIdx=h.targets[h.k],t=h.objs[tIdx],o=h.objs[i];
+  if(i===tIdx){
+    state.locked=true;h.found[i]=1;state.stars++;
+    addStar();hopFox();sfx('right');confetti(14);
+    el.classList.add('found');el.classList.remove('hint');
+    say(o.en+'! '+praise());
+    var my=rid;
+    setTimeout(function(){
+      if(my!==rid)return;
+      h.k++;h.wrong=0;state.locked=false;
+      if(h.k>=h.targets.length)finish();
+      else{render();setTimeout(function(){if(my===rid)say('Find the '+h.objs[h.targets[h.k]].en+'!')},300)}
+    },1900);
+  }else{
+    h.wrong++;sfx('wrong');
+    el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');
+    say('That is '+art(o.en)+'. Find the '+t.en+'!');
+    if(h.wrong>=2){
+      var te=app.querySelector('.obj[data-i="'+tIdx+'"]');
+      if(te)te.classList.add('hint');
+    }
+  }
+}
+
+/* --- mini story --- */
+function startStory(){
+  var n=stats.games.story||0;
+  var story=STORIES[n%STORIES.length];
+  state.st={story:story,i:0,ans:false};
+  state.total=story.scenes.length;state.stars=0;state.topic='mix';
+  go('story');
+  var my=rid;
+  setTimeout(function(){if(my===rid)sayScene()},500);
+}
+function sayScene(){
+  var st=state.st;if(!st)return;
+  say(st.story.scenes[st.i].t.replace(/[{}]/g,''),0.8);
+}
+function viewStory(){
+  var st=state.st,sc=st.story.scenes[st.i];
+  var text=sc.t.replace(/\{([^}]+)\}/g,function(m,w){
+    return '<span class="kw" role="button" tabindex="0" data-action="sword" data-w="'+w+'">'+w+'</span>';
+  });
+  var opts=sc.q
+    ?'<div class="sqt">'+sc.q.t+'</div><div class="choices four">'+sc.q.o.map(function(o,i){
+        return '<button class="btn choice" data-action="sopt" data-i="'+i+'" aria-label="Option '+(i+1)+'">'+o+'</button>';
+      }).join('')+'</div>'
+    :'';
+  var last=st.i>=st.story.scenes.length-1;
+  return topbar(starsBox('Story'))
+  +'<div class="title" style="font-size:22px">'+st.story.title+'<small lang="az">'+st.story.az+'</small></div>'
+  +'<div class="sart" aria-hidden="true">'+sc.a+'</div>'
+  +'<div class="stxt"><button class="btn say" data-action="ssay" aria-label="Read it">🔊</button><p>'+text+'</p></div>'
+  +opts
+  +'<button class="btn wide primary" id="snext" data-action="snext"'+(sc.q&&!st.ans?' disabled':'')+'>'+(last?'✓ The end':'▶ Next')+'</button>';
+}
+function storyOpt(i,el){
+  var st=state.st;if(!st||st.ans)return;
+  var sc=st.story.scenes[st.i];if(!sc.q)return;
+  if(i===sc.q.ok){
+    st.ans=true;el.classList.add('right');sfx('right');confetti(10);
+    say('Yes! '+praise());
+    var nb=document.getElementById('snext');if(nb)nb.disabled=false;
+  }else{
+    sfx('wrong');el.classList.add('shake');
+    setTimeout(function(){el.classList.remove('shake');el.classList.add('off')},450);
+    say('Oops, try again!');
+  }
+}
+function storyNext(){
+  var st=state.st;if(!st)return;
+  var sc=st.story.scenes[st.i];
+  if(sc.q&&!st.ans)return;
+  state.stars++;addStar();sfx('pop');
+  if(st.i>=st.story.scenes.length-1){finish();return}
+  st.i++;st.ans=false;
+  render();window.scrollTo(0,0);
+  sayScene();
+}
+
+/* --- tracing letters and numbers --- */
+function startTrace(){
+  var digits=shuffle('123456789'.split('')).slice(0,2);
+  var letters=shuffle('ABCDEFHILOTUVXZSMNWKJPRGYQ'.split('')).slice(0,3);
+  state.tr={items:shuffle(digits.concat(letters)),i:0};
+  state.total=5;state.stars=0;state.topic='mix';
+  go('trace');
+  var my=rid;
+  setTimeout(function(){if(my===rid)sayTrace()},500);
+}
+function sayTrace(){
+  var tr=state.tr;if(!tr)return;
+  var ch=tr.items[tr.i];
+  say(/\d/.test(ch)?'Trace the number '+NUMBERS[Number(ch)-1].en+'!':'Trace the letter '+ch+'!');
+}
+function viewTrace(){
+  var tr=state.tr,ch=tr.items[tr.i],isNum=/\d/.test(ch);
+  return topbar(starsBox('Tracing'))
+  +foxRow('<button class="btn say" data-action="tsay" aria-label="Hear it again">🔊</button><div><div class="word sm">Trace the '+(isNum?'number':'letter')+'!</div><div class="az" lang="az">'+(isNum?'Rəqəmin':'Hərfin')+' üstündən barmaqla get</div></div>')
+  +'<div class="tbox"><canvas id="tg" width="320" height="320"></canvas><canvas id="tcv" width="320" height="320"></canvas></div>'
+  +'<div class="prog" aria-hidden="true" style="max-width:340px;margin:12px auto 0"><i id="tprog" style="width:0%"></i></div>'
+  +'<div class="row" style="margin-top:18px"><button class="btn" data-action="tclear">↺ Clear</button><button class="btn" data-action="tskip">Skip ➜</button></div>';
+}
+function initTrace(){
+  var cv=document.getElementById('tcv'),gv=document.getElementById('tg');
+  if(!cv||!gv||!cv.getContext||!gv.getContext)return;
+  var dc=cv.getContext('2d'),gc=gv.getContext('2d');
+  if(!dc||!gc)return;
+  var S=320,tr=state.tr,ch=tr.items[tr.i],cy=S/2+8;
+  var fnt='700 250px Fredoka,"Trebuchet MS",Arial,sans-serif';
+  function glyph(ctx){ctx.font=fnt;ctx.textAlign='center';ctx.textBaseline='middle'}
+  gc.clearRect(0,0,S,S);glyph(gc);
+  gc.fillStyle='rgba(140,115,255,.22)';gc.fillText(ch,S/2,cy);
+  gc.setLineDash([10,9]);gc.lineWidth=3;gc.strokeStyle='rgba(43,42,76,.6)';gc.strokeText(ch,S/2,cy);
+  var m1=document.createElement('canvas');m1.width=m1.height=S;
+  var c1=m1.getContext('2d'),m2=document.createElement('canvas');m2.width=m2.height=S;
+  var c2=m2.getContext('2d');
+  if(!c1||!c2)return;
+  glyph(c1);c1.fillText(ch,S/2,cy);
+  glyph(c2);c2.lineWidth=46;c2.lineJoin='round';c2.strokeText(ch,S/2,cy);c2.fillText(ch,S/2,cy);
+  var d1,d2;
+  try{d1=c1.getImageData(0,0,S,S).data;d2=c2.getImageData(0,0,S,S).data}catch(e){return}
+  var pts=[];
+  for(var y=0;y<S;y+=6)for(var x=0;x<S;x+=6){var a=(y*S+x)*4+3;if(d1[a]>128)pts.push(a)}
+  if(pts.length<20)return;
+  dc.lineCap='round';dc.lineJoin='round';dc.lineWidth=30;dc.strokeStyle='#8C73FF';
+  var drawing=false,lx=0,ly=0,busy=false,warned=false;
+  function pos(e){var r=cv.getBoundingClientRect();return [(e.clientX-r.left)*S/r.width,(e.clientY-r.top)*S/r.height]}
+  cv.addEventListener('pointerdown',function(e){
+    if(busy)return;
+    e.preventDefault();drawing=true;
+    var p=pos(e);lx=p[0];ly=p[1];
+    dc.beginPath();dc.moveTo(lx,ly);dc.lineTo(lx+0.1,ly+0.1);dc.stroke();
+    try{cv.setPointerCapture(e.pointerId)}catch(err){}
+  });
+  cv.addEventListener('pointermove',function(e){
+    if(!drawing)return;
+    var p=pos(e);dc.beginPath();dc.moveTo(lx,ly);dc.lineTo(p[0],p[1]);dc.stroke();lx=p[0];ly=p[1];
+  });
+  function check(){
+    var dd=dc.getImageData(0,0,S,S).data,cov=0,i;
+    for(i=0;i<pts.length;i++)if(dd[pts[i]]>0)cov++;
+    cov/=pts.length;
+    var tot=0,ins=0;
+    for(var y2=0;y2<S;y2+=6)for(var x2=0;x2<S;x2+=6){
+      var q=(y2*S+x2)*4+3;
+      if(dd[q]>0){tot++;if(d2[q]>0)ins++}
+    }
+    var prec=tot?ins/tot:0;
+    var bar=document.getElementById('tprog');
+    if(bar)bar.style.width=Math.min(100,Math.round(cov/0.8*Math.min(1,prec/0.7)*100))+'%';
+    if(cov>=0.8&&prec>=0.7){busy=true;traceDone()}
+    else if(tot>60&&prec<0.5&&!warned){warned=true;toast('Hərfin üstündən get ✏️')}
+  }
+  function end(){if(!drawing)return;drawing=false;check()}
+  cv.addEventListener('pointerup',end);
+  cv.addEventListener('pointercancel',end);
+}
+function traceDone(){
+  var my=rid;
+  state.stars++;addStar();hopFox();sfx('right');confetti(18);
+  say(praise());
+  setTimeout(function(){if(my===rid)traceNext()},1500);
+}
+function traceNext(){
+  var tr=state.tr;if(!tr)return;
+  tr.i++;
+  if(tr.i>=tr.items.length){finish();return}
+  render();sayTrace();
+}
+
+/* --- dress up --- */
+function viewDress(){
+  var slots=[['hat','Hat','Papaq'],['face','Glasses','Eynək'],['neck','Neck','Boyun'],['side','Extra','Əlavə']];
+  var html=topbar()
+    +'<div class="title">Dress up<small lang="az">Geyindir — ulduz topla, yeni geyim aç</small></div>'
+    +'<div class="dstage"><div class="fox" style="font-size:130px" aria-hidden="true">'+avatar()+'</div></div>';
+  slots.forEach(function(sl){
+    html+='<div class="hd">'+sl[1]+'<small lang="az">'+sl[2]+'</small></div><div class="tiles dt">'
+      +DRESS.filter(function(x){return x.slot===sl[0]}).map(function(it){
+        var open=dressOpen(it),on=outfit[it.slot]===it.e;
+        return '<button class="btn tile'+(on?' sel':'')+(open?'':' lockd')+'" data-action="dress" data-e="'+it.e+'"><span class="pic">'+(open?it.e:'🔒')+'</span><span class="tw">'+(open?it.en:it.at+' ⭐')+'</span></button>';
+      }).join('')+'</div>';
+  });
+  return html+'<button class="btn wide" data-action="undress">↺ Take off all</button>';
+}
+function dressToggle(e){
+  var it=DRESS.filter(function(x){return x.e===e})[0];
+  if(!it)return;
+  if(!dressOpen(it)){sfx('wrong');toast(it.at+' ⭐ lazımdır 🔒');return}
+  if(outfit[it.slot]===it.e)delete outfit[it.slot];else outfit[it.slot]=it.e;
+  store.set('ww_outfit',outfit);
+  render();say(it.en,0.8);
+}
+
+/* --- daily adventure --- */
+function advToday(){
+  if(!advData||advData.date!==today()){advData={date:today(),i:0,done:false};store.set('ww_adv',advData)}
+  return advData;
+}
+function advList(){
+  var seed=Number(today().replace(/-/g,''))||1;
+  function rng(){seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296}
+  var pool=ADV_POOL.slice();
+  for(var i=pool.length-1;i>0;i--){var j=Math.floor(rng()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t}
+  return pool.slice(0,4);
+}
+function gameInfo(id){return GAMES.filter(function(g){return g.id===id})[0]}
+function advButton(){
+  var ad=advToday();
+  var sub=ad.done?'✓ Bu gün tamamlandı':(ad.i>0?ad.i+'/4 — davam et':'Hər gün yeni 4 oyun + sürpriz 🎁');
+  return '<button class="btn adv" data-action="adventure"><span class="advi" aria-hidden="true">🗺️</span><span class="advt">Today\'s adventure<small lang="az">'+sub+'</small></span></button>';
+}
+function viewAdventure(){
+  var ad=advToday(),list=advList();
+  var stops=list.map(function(e,i){
+    var cls=i<ad.i||ad.done?' done':(i===ad.i?' now':'');
+    var g=gameInfo(e.g);
+    return '<div class="stop'+cls+'"><span class="sic">'+(cls===' done'?'✅':GICON[e.g])+'</span><span>'+g.en+'<small lang="az">'+g.az+'</small></span></div>';
+  }).join('');
+  var gift='<div class="stop'+(ad.done?' done':'')+'"><span class="sic">'+(ad.done?'🎁':'❓')+'</span><span>Surprise!<small lang="az">Günün sürprizi</small></span></div>';
+  return topbar()
+  +'<div class="title">Today\'s adventure<small lang="az">Günün macərası — 4 oyun və sürpriz</small></div>'
+  +'<div class="amap">'+stops+gift+'</div>'
+  +(ad.done
+    ?'<p class="note" lang="az">Bu günün macərası tamamlandı! Sabah yeni macəra gözləyir. İstəsən, istənilən oyunu sərbəst oynaya bilərsən.</p><button class="btn wide" data-action="home">🏠 Home</button>'
+    :'<button class="btn wide primary" data-action="advgo">▶ '+(ad.i>0?'Continue':'Start')+'</button>');
+}
+function startAdventureStop(){
+  var ad=advToday();
+  if(ad.done){go('adventure');return}
+  var e=advList()[ad.i];
+  if(!e){go('adventure');return}
+  state.adv={active:true};
+  startRound(e.g,e.t||'mix',true);
+}
+function giveSurprise(){
+  var k=dayNum()%3,res=null;
+  if(k===0){
+    var ms=STICKERS.filter(function(a){return stickers.indexOf(a.id)<0});
+    if(ms.length){var st=rnd(ms);stickers.push(st.id);store.set('ww_stickers',stickers);res={e:st.e,txt:'bonus stiker: '+st.az}}
+  }else if(k===1){
+    var ml=LOOKS.filter(function(l){return l.special&&unlockedLooks.indexOf(l.id)<0});
+    if(ml.length){var lk=rnd(ml);unlockedLooks.push(lk.id);store.set('ww_ul',unlockedLooks);res={e:'🖼️',txt:'yeni fon: '+lk.az}}
+  }else{
+    var md=DRESS.filter(function(x){return !dressOpen(x)});
+    if(md.length){var dr=rnd(md);gifts.push(dr.e);store.set('ww_gifts',gifts);res={e:dr.e,txt:'yeni geyim: '+dr.az}}
+  }
+  if(!res){totalStars+=5;store.set('ww_stars',totalStars);res={e:'⭐',txt:'+5 ulduz'}}
+  return res;
+}
+
+/* --- short sessions: break time --- */
+function viewBreak(){
+  var b=state.brk,a=BREAK_ACTS[b.k];
+  return '<div class="brk"><h2>Break time!</h2><p class="sub" lang="az">Fasilə vaxtıdır! Bir az hərəkət edək.</p>'
+  +'<div class="bigemoji" aria-hidden="true">'+a.e+'</div><div class="word sm">'+a.t+'</div><div class="az" lang="az">'+a.az+'</div>'
+  +'<div class="cnt"><span id="bt">'+Math.max(0,b.t)+'</span></div>'
+  +'<div class="actions"><button class="btn primary" data-action="brkdone"'+(b.done?'':' disabled')+'>▶ Continue</button>'
+  +'<button class="btn" data-action="gate">🔒 Valideyn</button></div></div>';
+}
+function breakTick(){
+  var b=state.brk;if(!b||b.done)return;
+  b.t--;
+  var el=document.getElementById('bt');if(el)el.textContent=Math.max(0,b.t);
+  if(b.t<=0){b.done=true;render();say('Good job! Let us play again!');return}
+  if(b.t%9===0){b.k=Math.min(BREAK_ACTS.length-1,b.k+1);render();say(BREAK_ACTS[b.k].t)}
+}
+
 /* --- reward --- */
 function finish(){
   var g=state.game;
   stats.games[g]=(stats.games[g]||0)+1;day().r++;saveStats();
   if(g==='count'){countLvl=Math.min(countLvl+1,6);store.set('ww_clvl',countLvl)}
+  var adventureDone=false;
+  if(state.adv&&state.adv.active){
+    var ad=advToday();ad.i++;store.set('ww_adv',advData);
+    if(ad.i<4){go('adventure');sfx('win');confetti(30);say('Great! Next stop!');return}
+    ad.done=true;store.set('ww_adv',advData);state.adv=null;adventureDone=true;
+  }
   var missing=STICKERS.filter(function(a){return stickers.indexOf(a.id)<0});
   var preferred=missing.filter(function(a){return a.kind===state.topic});
   var pool=preferred.length?preferred:(missing.length?missing:STICKERS);
@@ -1617,11 +2129,13 @@ function finish(){
   var before=state.startStars||0;
   var news=WORLD.filter(function(w){return w.at>0&&w.at>before&&w.at<=totalStars}).map(function(w){return w.e});
   if(petFor(totalStars).at!==petFor(before).at)news.push(petFor(totalStars).e);
-  state.reward={id:s.id,isNew:isNew,all:isNew&&stickers.length>=STICKERS.length,news:news};
+  state.reward={id:s.id,isNew:isNew,all:isNew&&stickers.length>=STICKERS.length,news:news,surprise:adventureDone?giveSurprise():null};
   go('reward');
   sfx('win');confetti(70);
   var who=name?(' '+name):'';
-  say(isNew?('Hooray'+who+'! You got a new sticker!'):('Hooray'+who+'! Great job!'));
+  var msg=isNew?('Hooray'+who+'! You got a new sticker!'):('Hooray'+who+'! Great job!');
+  if(adventureDone)msg='Adventure complete'+who+'! You got a surprise! '+msg;
+  say(msg);
 }
 
 function saveName(v){
@@ -1649,7 +2163,8 @@ app.addEventListener('click',function(e){
   var a=b.dataset.action;
   if(a==='game'){
     var gm=b.dataset.game,g=GAMES.filter(function(x){return x.id===gm})[0];
-    if(g&&g.topics){state.game=gm;go('topics')}
+    if(gm==='dress')go('dress');
+    else if(g&&g.topics){state.game=gm;go('topics')}
     else startRound(gm,gm==='puzzle'?'shapes':'mix');
   }
   else if(a==='topic')startRound(state.game,b.dataset.topic);
@@ -1658,6 +2173,24 @@ app.addEventListener('click',function(e){
   else if(a==='book')go('book');
   else if(a==='look')go('look');
   else if(a==='woods')go('woods');
+  else if(a==='adventure')go('adventure');
+  else if(a==='advgo')startAdventureStop();
+  else if(a==='obj')huntTap(Number(b.dataset.i),b);
+  else if(a==='hsay'){var hh=state.hn;if(hh)say('Find the '+hh.objs[hh.targets[hh.k]].en+'!')}
+  else if(a==='sword'){
+    var stw=state.st;
+    if(stw){var w0=b.dataset.w,sc0=stw.story.scenes[stw.i];sayParts([W(w0)],0.75);toast(w0+' = '+((sc0.w&&sc0.w[w0])||''));sfx('pop')}
+  }
+  else if(a==='ssay')sayScene();
+  else if(a==='sopt')storyOpt(Number(b.dataset.i),b);
+  else if(a==='snext')storyNext();
+  else if(a==='tsay')sayTrace();
+  else if(a==='tclear')render();
+  else if(a==='tskip')traceNext();
+  else if(a==='dress')dressToggle(b.dataset.e);
+  else if(a==='undress'){outfit={};store.set('ww_outfit',outfit);render()}
+  else if(a==='brkdone'){sessionSec=0;go('home')}
+  else if(a==='sess'){settings.session=Number(b.dataset.v)||0;store.set('ww_session',settings.session);render()}
   else if(a==='again')startRound(state.game,state.topic);
   else if(a==='pick')pick(Number(b.dataset.idx));
   else if(a==='flip')flipCard(Number(b.dataset.idx));
@@ -1675,7 +2208,11 @@ app.addEventListener('click',function(e){
   else if(a==='ltile'){var l=byId(b.dataset.id);if(l)sayParts(['Letter '+l.l+'.',W(l.word)],0.75)}
   else if(a==='slot'){var s=byId(b.dataset.id);if(s)sayItem(s)}
   else if(a==='char'){charIdx=Number(b.dataset.i)||0;store.set('ww_char',charIdx);render()}
-  else if(a==='setlook'){look=b.dataset.id;store.set('ww_look',look);applyLook();render()}
+  else if(a==='setlook'){
+    var lk0=LOOKS.filter(function(l){return l.id===b.dataset.id})[0];
+    if(lk0&&lk0.special&&unlockedLooks.indexOf(lk0.id)<0){toast('Günün macərasını tamamlayanda açılır 🎁');return}
+    look=b.dataset.id;store.set('ww_look',look);applyLook();render();
+  }
   else if(a==='mute'){
     muted=!muted;store.set('ww_muted',muted);
     if(muted)stopSpeech();
@@ -1774,7 +2311,7 @@ app.addEventListener('keydown',function(e){
   }
   if((e.key==='Enter'||e.key===' ')&&t.classList){
     var c=t.classList;
-    if(c.contains('mcard')||c.contains('hole')){e.preventDefault();t.click()}
+    if(c.contains('mcard')||c.contains('hole')||c.contains('kw')){e.preventDefault();t.click()}
     else if(c.contains('piece')){e.preventDefault();selectPiece(t)}
   }
 });
@@ -1820,8 +2357,10 @@ app.addEventListener('pointercancel',function(e){endDrag(e,false)});
    play-time tracking and daily limit
    ===================================================== */
 setInterval(function(){
-  if(document.hidden||NO_TIME[state.screen])return;
-  var d=day();d.s++;
+  if(document.hidden)return;
+  if(state.screen==='break'){breakTick();return}
+  if(NO_TIME[state.screen])return;
+  var d=day();d.s++;sessionSec++;
   if(d.s%10===0)saveStats();
   var lim=settings.limit;
   if(!lim)return;
