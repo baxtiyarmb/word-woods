@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Word Woods</title>
+<meta name="theme-color" content="#8FD3FF">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
@@ -473,6 +476,21 @@ h1{
 @keyframes gotit{to{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
 @keyframes bshake{0%,100%{transform:translateX(-50%)}25%{transform:translateX(-62%)}75%{transform:translateX(-38%)}}
 
+/* custom words, counters, repeat */
+.t-mine{background:#FFD1A8}
+.myimg{width:78%;height:78%;object-fit:cover;border-radius:18px;border:3px solid var(--line);display:block}
+.tile .pic .myimg{width:60px;height:60px}
+.chip .myimg{width:34px;height:34px;border-radius:8px;border-width:2px}
+.sheet .big .myimg{width:56px;height:56px}
+.bface .myimg{width:48px;height:48px;border-radius:50%;border-width:2px}
+.fall .myimg{width:48px;height:48px}
+.mback .myimg{width:70%;height:auto;aspect-ratio:1/1}
+.starcount{font-size:20px;font-weight:700;color:var(--text-card);padding:2px 6px}
+.scard .sw{width:90px;height:90px}
+.scard .shp{width:96px;height:96px}
+.scard .num{font-size:90px}
+.scard .myimg{width:100px;height:100px}
+
 /* confetti */
 #fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .cf{position:absolute;top:-20px;width:12px;height:16px;border-radius:3px;border:2px solid var(--line);animation:fall linear forwards}
@@ -651,7 +669,7 @@ TOPICS.phrase={id:'phrase',en:'Phrases',az:'Birləşmələr',items:[],
 var ALL=ANIMALS.concat(COLORS,FRUITS,BODY,NUMBERS,SHAPES);
 var LOOK=ALL.concat(LETTERS);
 var STICKERS=ANIMALS.concat(FRUITS);
-function byId(id){return LOOK.filter(function(x){return x.id===id})[0]}
+function byId(id){return LOOK.filter(function(x){return x.id===id})[0]||MINE.filter(function(x){return x.id===id})[0]}
 
 var SINGLE={animals:'animal',colors:'color',fruits:'fruit',body:'body part',numbers:'number',shapes:'shape'};
 var PLURAL={animals:'animals',colors:'colors',fruits:'fruits',body:'body parts',numbers:'numbers',shapes:'shapes'};
@@ -798,7 +816,7 @@ var STORIES=[
     {a:'🦆👋🐟',t:'The duck says {hello}!',w:{hello:'salam'}},
     {a:'🦆🐟🎉',t:'Now they are {friends}.',w:{friends:'dostlar'}}]}
 ];
-var GICON={find:'👆',listen:'👂',memory:'🃏',puzzle:'🔷',count:'🔢',coloring:'🎨',simon:'🙋',odd:'🤔',phrase:'💬',abc:'🔤',run:'🏃',feed:'🍎',story:'📖',trace:'✍️',hunt:'🔎',dress:'👑',balloon:'🎈','catch':'🧺'};
+var GICON={find:'👆',listen:'👂',memory:'🃏',puzzle:'🔷',count:'🔢',coloring:'🎨',simon:'🙋',odd:'🤔',phrase:'💬',abc:'🔤',run:'🏃',feed:'🍎',story:'📖',trace:'✍️',hunt:'🔎',dress:'👑',balloon:'🎈','catch':'🧺',repeat:'🎙️'};
 var ADV_POOL=[{g:'find',t:'mix'},{g:'listen',t:'mix'},{g:'run',t:'mix'},{g:'hunt'},{g:'feed'},{g:'memory',t:'mix'},{g:'count'},{g:'puzzle'},{g:'odd'},{g:'abc'},{g:'phrase'},{g:'trace'},{g:'story'},{g:'balloon'},{g:'catch'}];
 var BREAK_ACTS=[
   {e:'🙆',t:'Stretch up high!',az:'Əllərini yuxarı qaldır!'},
@@ -827,7 +845,8 @@ var GAMES=[
   {id:'story',en:'Mini story',az:'Mini hekayə',pic:'📖'},
   {id:'dress',en:'Dress up',az:'Geyindir',pic:'👑'},
   {id:'balloon',en:'Balloon pop',az:'Balonları partlat',pic:'🎈🎯'},
-  {id:'catch',en:'Catch it',az:'Tut',pic:'🧺🍎'}
+  {id:'catch',en:'Catch it',az:'Tut',pic:'🧺🍎'},
+  {id:'repeat',en:'Say it',az:'Təkrar et',pic:'🎙️🗣️'}
 ];
 
 /* =====================================================
@@ -848,7 +867,16 @@ if(charIdx<0||charIdx>=CHARS.length)charIdx=0;
 var look=String(store.get('ww_look','sky'));
 if(!LOOKS.some(function(l){return l.id===look}))look='sky';
 var settings={limit:Number(store.get('ww_limit',0))||0};
-(function(){var sv=store.get('ww_session',10);settings.session=(sv===0)?0:(Number(sv)||10)})();
+(function(){
+  var sv=store.get('ww_session',15);settings.session=(sv===0)?0:(Number(sv)||15);
+  var lv=Number(store.get('ww_len',10));settings.len=[5,8,10,15].indexOf(lv)>-1?lv:10;
+})();
+function N(){return settings.len}
+var MINE=store.get('ww_mine',[]);
+if(!Array.isArray(MINE))MINE=[];
+MINE=MINE.filter(function(m){return m&&m.id&&m.en}).map(function(m){m.kind='mine';return m});
+TOPICS.mine={id:'mine',en:'My words',az:'Mənim sözlərim',items:MINE,
+  ask:function(w){return 'Where is the '+w+'?'},named:function(w){return art(w)}};
 var outfit=store.get('ww_outfit',{});
 if(!outfit||typeof outfit!=='object'||Array.isArray(outfit))outfit={};
 var gifts=store.get('ww_gifts',[]);if(!Array.isArray(gifts))gifts=[];
@@ -1034,7 +1062,7 @@ function sayParts(parts,rate){
 }
 function say(text,rate){sayParts([text],rate)}
 function W(en){var k=String(en).toLowerCase();return clips[k]?{clip:k}:en}
-function clipKey(t){return TOPIC_ORDER.indexOf(t.kind)>-1?t.en.toLowerCase():null}
+function clipKey(t){return (TOPIC_ORDER.indexOf(t.kind)>-1||t.kind==='mine')?t.en.toLowerCase():null}
 function sayItem(it,rate){sayParts([W(it.en)],rate||0.75)}
 function praise(){
   var p=rnd(PRAISE);
@@ -1100,8 +1128,8 @@ var rid=0; /* round token: timers from an abandoned round are ignored */
 var state={screen:welcomed?'home':'welcome',game:'find',topic:'mix',qs:[],i:0,stars:0,total:5,wrong:0,locked:false,
   reward:null,mem:null,pz:null,sm:null,cl:null,cnt:0,startStars:0,gate:null,vedit:null,resetArmed:false};
 
-var FREE_SCREENS={parent:1,gate:1,voice:1,sleep:1,welcome:1,reward:1,play:1,memory:1,puzzle:1,simon:1,coloring:1,hunt:1,trace:1,story:1,break:1,balloon:1,catch:1};
-var NO_TIME={parent:1,gate:1,voice:1,sleep:1,welcome:1};
+var FREE_SCREENS={parent:1,gate:1,voice:1,sleep:1,welcome:1,reward:1,play:1,memory:1,puzzle:1,simon:1,coloring:1,hunt:1,trace:1,story:1,break:1,balloon:1,catch:1,words:1,repeat:1};
+var NO_TIME={parent:1,gate:1,voice:1,sleep:1,welcome:1,words:1};
 function sessionDue(){return settings.session>0&&sessionSec>=settings.session*60}
 function overLimit(){
   var lim=settings.limit;if(!lim)return false;
@@ -1119,6 +1147,7 @@ function phraseFace(it){
   return '<span class="ph"><span class="phc" style="background:'+it.adj.c+'"></span><span class="phe">'+it.noun.e+'</span></span>';
 }
 function face(it,withDots){
+  if(it.kind==='mine')return it.img?'<img class="myimg" src="'+it.img+'" alt="">':(it.e||'⭐');
   if(it.kind==='shapes')return shapeSVG(it.id,SHAPE_FILL);
   if(it.kind==='colors')return '<span class="sw" style="background:'+it.c+'"></span>';
   if(it.kind==='numbers')return '<span class="num">'+it.n+'</span>'+(withDots?'<span class="dots" aria-hidden="true">'+dotsOf(it.n)+'</span>':'');
@@ -1131,6 +1160,7 @@ function homeBtn(){return '<button class="btn ibtn" data-action="home" aria-labe
 function dot(c){return '<i class="dot" style="background:'+c+'"></i>'}
 function topbar(mid){return '<div class="bar">'+homeBtn()+(mid||'<span></span>')+muteBtn()+'</div>'}
 function starsHTML(){
+  if(state.total>6)return '<span class="starcount">⭐ '+state.stars+'/'+state.total+'</span>';
   var s='';
   for(var i=0;i<state.total;i++)s+='<span class="star'+(i<state.stars?' on':'')+'">⭐</span>';
   return s;
@@ -1176,7 +1206,7 @@ function topicCard(id){
   else{
     en=t.en;az=t.az;
     pic={animals:'🐶',colors:dot('#EF4444')+dot('#2F7BEA'),fruits:'🍎',body:'✋',numbers:'<b>1 2 3</b>',
-      shapes:shapeSVG('circle',SHAPE_FILL)+shapeSVG('square',SHAPE_FILL)}[id];
+      shapes:shapeSVG('circle',SHAPE_FILL)+shapeSVG('square',SHAPE_FILL),mine:'⭐'}[id];
   }
   return '<button class="btn topic t-'+id+'" data-action="topic" data-topic="'+id+'"><span class="tp" aria-hidden="true">'+pic+'</span><span>'+en+'</span><small lang="az">'+az+'</small></button>';
 }
@@ -1184,7 +1214,7 @@ function viewTopics(){
   var g={find:['Find it','Düzgün şəkli tap'],listen:['Listen','Səsi tap'],memory:['Memory','Yaddaş kartları']}[state.game];
   return topbar()
   +'<div class="title">'+g[0]+'<small lang="az">'+g[1]+' — mövzunu seç</small></div>'
-  +'<div class="tgrid">'+TOPIC_ORDER.concat(['mix']).map(topicCard).join('')+'</div>';
+  +'<div class="tgrid">'+TOPIC_ORDER.concat(MINE.length>=3?['mine']:[],['mix']).map(topicCard).join('')+'</div>';
 }
 
 function choiceHTML(c,i){
@@ -1396,6 +1426,9 @@ function viewParent(){
     return '<button class="btn'+(v===lim?' sel':'')+'" data-action="limit" data-v="'+v+'">'+(v?v+' dəq':'Yoxdur')+'</button>';
   }).join('');
   var left=lim?Math.max(0,Math.ceil(((lim+(d.x||0))*60-d.s)/60)):0;
+  var lenOpts=[5,8,10,15].map(function(v){return '<button class="btn'+(v===settings.len?' sel':'')+'" data-action="len" data-v="'+v+'">'+v+' sual</button>'}).join('');
+  var lb=store.get('ww_lastbk','');
+  var offTxt=!('serviceWorker' in navigator)?'Bu brauzer oflayn rejimi dəstəkləmir.':(navigator.serviceWorker.controller?'Aktivdir ✓ — internet olmadan da açılır.':'Hələ hazır deyil. Sayt tam fayllarla (sw.js, manifest, ikonlar) yüklənməlidir. Sonra səhifəni internetlə bir dəfə açın və yenidən açın.');
   var sessOpts=[0,5,8,10,15].map(function(v){return '<button class="btn'+(v===settings.session?' sel':'')+'" data-action="sess" data-v="'+v+'">'+(v?v+' dəq':'Yoxdur')+'</button>'}).join('');
   var recorded=Object.keys(clips).length;
   return topbar()
@@ -1411,6 +1444,10 @@ function viewParent(){
   +'<div class="pcard"><h3>🎮 Oyunlar</h3>'+(gl||'<p>Hələ oyun oynanılmayıb.</p>')+'</div>'
   +'<div class="pcard"><h3>⏰ Gündəlik vaxt limiti</h3><div class="opts">'+opts+'</div>'
   +(lim?'<p>Bu gün qalan vaxt: <b>'+left+' dəq</b></p><div class="opts"><button class="btn" data-action="extend">+10 dəq əlavə et</button></div>':'<p>Limit söndürülüb.</p>')+'</div>'
+  +'<div class="pcard"><h3>📏 Oyun uzunluğu</h3><p>Hər raundda neçə sual və tapşırıq olsun. Böyük rəqəm daha uzun oyun deməkdir, ikinci yarıda sualların seçimləri də artır.</p><div class="opts">'+lenOpts+'</div></div>'
+  +'<div class="pcard"><h3>✏️ Fərdi sözlər</h3><p>Uşağın sevdiyi şeylərin (oyuncaq, ailə üzvü, ev heyvanı) adlarını şəkil və ya emoji ilə əlavə edin. Sayı: <b>'+MINE.length+'</b></p><div class="opts"><button class="btn" data-action="words">Sözləri idarə et</button></div></div>'
+  +'<div class="pcard"><h3>💾 Ehtiyat nüsxə</h3><p>Ulduz, stiker, statistika, geyim, fərdi sözlər və səs yazılarını bir fayla yazın. Telefon dəyişəndə və ya brauzer məlumatı silinəndə geri yükləyə bilərsiniz.</p><p>'+(lb?'Son nüsxə: '+lb:'Hələ nüsxə çıxarılmayıb.')+'</p><div class="opts"><button class="btn" data-action="bkmake">⬇ Nüsxəni endir</button><label class="btn">⬆ Nüsxəni yüklə<input type="file" id="bkfile" accept=".json,application/json" style="display:none"></label></div></div>'
+  +'<div class="pcard"><h3>📶 Oflayn rejim</h3><p>'+offTxt+'</p></div>'
   +'<div class="pcard"><h3>🧘 Qısa seanslar</h3><p>Seçilmiş müddət keçəndən sonra oyun 45 saniyəlik fasilə (hərəkət və su) təklif edir.</p><div class="opts">'+sessOpts+'</div></div>'
   +'<div class="pcard"><h3>🎙️ Sizin səsinizlə sözlər</h3><p>Yazılmış söz: <b>'+recorded+'</b></p>'
   +'<p>Sözləri öz səsinizlə yazın, oyun robot səsi əvəzinə sizin səsinizi çalacaq.</p>'
@@ -1430,6 +1467,11 @@ function voiceGroups(){
     });
     groups.push({name:TOPICS[id].en,az:TOPICS[id].az,items:items});
   });
+  if(MINE.length){
+    var mi=[];
+    MINE.forEach(function(it){var k=it.en.toLowerCase();if(!seen[k]){seen[k]=1;mi.push({key:k,it:it,label:it.en})}});
+    if(mi.length)groups.push({name:'My words',az:'Mənim sözlərim',items:mi});
+  }
   var abc=[];
   LETTERS.forEach(function(l){
     var k=l.word.toLowerCase();
@@ -1479,7 +1521,7 @@ function render(){
   var v={welcome:viewWelcome,home:viewHome,topics:viewTopics,play:viewPlay,memory:viewMemory,puzzle:viewPuzzle,
     simon:viewSimon,coloring:viewColoring,reward:viewReward,learn:viewLearn,book:viewBook,look:viewLook,
     woods:viewWoods,gate:viewGate,parent:viewParent,voice:viewVoice,sleep:viewSleep,
-    adventure:viewAdventure,story:viewStory,trace:viewTrace,dress:viewDress,hunt:viewHunt,break:viewBreak,balloon:viewBalloon,catch:viewCatch}[state.screen];
+    adventure:viewAdventure,story:viewStory,trace:viewTrace,dress:viewDress,hunt:viewHunt,break:viewBreak,balloon:viewBalloon,catch:viewCatch,words:viewWords,repeat:viewRepeat}[state.screen];
   app.innerHTML=v();
   if(state.screen==='trace')initTrace();
 }
@@ -1488,6 +1530,7 @@ function go(screen){
   else if(sessionDue()&&!FREE_SCREENS[screen])screen='break';
   state.screen=screen;
   stopSpeech();
+  try{if(recog){recog.abort();recog=null}}catch(e){}
   if(screen==='gate')newGate();
   if(screen==='break')state.brk={t:45,k:0,done:false};
   render();
@@ -1499,21 +1542,36 @@ function go(screen){
 /* =====================================================
    round builders
    ===================================================== */
-function buildRound(topic){
-  var targets;
-  if(topic==='mix')targets=shuffle(TOPIC_ORDER).slice(0,5).map(function(t){return pickTargets(TOPICS[t].items,1)[0]});
-  else targets=pickTargets(TOPICS[topic].items,5);
-  return targets.map(function(t){
+function pickMany(items,n){
+  var out=[];
+  while(out.length<n){
+    var batch=pickTargets(items,Math.min(items.length,n-out.length));
+    if(out.length&&batch.length>1&&batch[0].id===out[out.length-1].id)batch.push(batch.shift());
+    out=out.concat(batch);
+  }
+  return out;
+}
+function buildRound(topic,n,maxCh){
+  n=n||N();maxCh=maxCh||4;
+  var targets=[];
+  if(topic==='mix'){
+    while(targets.length<n){
+      shuffle(TOPIC_ORDER).forEach(function(tp){if(targets.length<n)targets.push(pickTargets(TOPICS[tp].items,1)[0])});
+    }
+  }else targets=pickMany(TOPICS[topic].items,n);
+  var half=Math.ceil(n/2);
+  return targets.map(function(t,i){
     var pool=TOPICS[t.kind].items;
-    var others=shuffle(pool.filter(function(p){return p.id!==t.id})).slice(0,2);
+    var want=Math.min((i>=half&&n>=8)?Math.min(maxCh,4):3,pool.length);
+    var others=shuffle(pool.filter(function(p){return p.id!==t.id})).slice(0,want-1);
     return {target:t,choices:shuffle([t].concat(others))};
   });
 }
 function buildCountRound(){
   var max=Math.min(10,4+countLvl),range=[];
   for(var i=1;i<=max;i++)range.push(i);
-  return shuffle(range).slice(0,5).map(function(n){
-    var thing=rnd(THINGS),t=NUMBERS[n-1];
+  return pickMany(range.map(function(x){return NUMBERS[x-1]}),N()).map(function(t){
+    var n=t.n,thing=rnd(THINGS);
     var others=shuffle(range.filter(function(x){return x!==n})).slice(0,2).map(function(x){return NUMBERS[x-1]});
     var vis='';
     for(var k=0;k<n;k++)vis+='<button class="citem" data-action="citem" aria-label="'+thing.pl+'">'+thing.e+'</button>';
@@ -1524,7 +1582,7 @@ function buildCountRound(){
 }
 function buildOddRound(){
   var order=shuffle(TOPIC_ORDER),qs=[];
-  for(var i=0;i<5;i++){
+  for(var i=0;i<N();i++){
     var A=order[i%order.length],B=rnd(TOPIC_ORDER.filter(function(x){return x!==A}));
     var three=shuffle(TOPICS[A].items).slice(0,3),odd=pickTargets(TOPICS[B].items,1)[0];
     qs.push((function(A,B,three,odd){
@@ -1544,7 +1602,7 @@ function mkPhrase(noun,adj){
 }
 function buildPhraseRound(){
   var nouns=ANIMALS.concat(FRUITS),qs=[];
-  for(var i=0;i<5;i++){
+  for(var i=0;i<N();i++){
     var noun=rnd(nouns),other=rnd(nouns.filter(function(n){return n.id!==noun.id})),target,choices;
     if(i%2===0){
       var adj=rnd(COLORS),adj2=rnd(COLORS.filter(function(c){return c.id!==adj.id}));
@@ -1560,7 +1618,7 @@ function buildPhraseRound(){
   return qs;
 }
 function buildAbcRound(){
-  return shuffle(LETTERS).slice(0,5).map(function(t,i){
+  return pickMany(LETTERS,N()).map(function(t,i){
     var others=shuffle(LETTERS.filter(function(l){return l.id!==t.id})).slice(0,2);
     var choices=shuffle([t].concat(others));
     if(i%2===0||t.noPic){
@@ -1579,14 +1637,14 @@ function buildAbcRound(){
    game flow
    ===================================================== */
 function buildRunRound(){
-  return buildRound('mix').map(function(q){
+  return buildRound('mix',N(),3).map(function(q){
     var t=q.target;
     q.say=function(){return ['Run to the',W(t.en),'door!']};
     return q;
   });
 }
 function buildFeedRound(){
-  return pickTargets(FRUITS,5).map(function(t){
+  return pickMany(FRUITS,N()).map(function(t){
     var others=shuffle(FRUITS.filter(function(p){return p.id!==t.id})).slice(0,2);
     var a=art(t.en).split(' ')[0];
     return {target:t,choices:shuffle([t].concat(others)),
@@ -1610,6 +1668,7 @@ function startRound(game,topic,adv){
   if(game==='story'){startStory();return}
   if(game==='balloon'){startBalloon();return}
   if(game==='catch'){startCatch();return}
+  if(game==='repeat'){startRepeat();return}
   if(game==='count')state.qs=buildCountRound();
   else if(game==='odd')state.qs=buildOddRound();
   else if(game==='phrase')state.qs=buildPhraseRound();
@@ -1644,6 +1703,8 @@ function addStar(){
   totalStars++;store.set('ww_stars',totalStars);
   var stars=app.querySelectorAll('.star');
   if(stars[state.stars-1])stars[state.stars-1].classList.add('on');
+  var sc=app.querySelector('.starcount');
+  if(sc)sc.textContent='⭐ '+state.stars+'/'+state.total;
 }
 function hopFox(){
   var fox=document.getElementById('fox');
@@ -1700,9 +1761,11 @@ function next(){
 
 /* --- memory --- */
 function startMemory(topic){
-  var pool=topic==='mix'?shuffle(ALL).slice(0,4):pickTargets(TOPICS[topic].items,4);
-  state.mem={cards:shuffle(pool.concat(pool)),first:-1,lock:false,found:0,pairs:4};
-  state.total=4;state.stars=0;
+  var pairs=N()<=5?4:(N()<=10?6:8);
+  var pool=topic==='mix'?shuffle(ALL).slice(0,pairs):pickTargets(TOPICS[topic].items,pairs);
+  pairs=pool.length;
+  state.mem={cards:shuffle(pool.concat(pool)),first:-1,lock:false,found:0,pairs:pairs};
+  state.total=pairs;state.stars=0;
   go('memory');
 }
 function flipCard(idx){
@@ -1734,14 +1797,26 @@ function flipCard(idx){
 }
 
 /* --- shapes puzzle --- */
+function puzzleBoard(avoid){
+  var pool=SHAPES.filter(function(x){return !avoid||avoid.indexOf(x.id)<0});
+  if(pool.length<4)pool=SHAPES;
+  var holes=shuffle(pool).slice(0,4),tray=shuffle(holes),tries=0;
+  while(tries++<30&&tray.some(function(x,i){return x.id===holes[i].id}))tray=shuffle(holes);
+  return {holes:holes,tray:tray};
+}
 function startPuzzle(){
-  var holes=shuffle(SHAPES).slice(0,4),tray=shuffle(holes),tries=0;
-  while(tries++<30&&tray.some(function(s,i){return s.id===holes[i].id}))tray=shuffle(holes);
-  state.pz={holes:holes,tray:tray,found:0,sel:null,wrong:0,bad:{}};
-  state.total=holes.length;state.stars=0;state.topic='shapes';
+  var b=puzzleBoard(null),boards=Math.min(3,Math.ceil(N()/5));
+  state.pz={holes:b.holes,tray:b.tray,found:0,sel:null,wrong:0,bad:{},b:0,boards:boards};
+  state.total=4*boards;state.stars=0;state.topic='shapes';
   go('puzzle');
   var my=rid;
   setTimeout(function(){if(my===rid)say('Put each shape in its place!')},400);
+}
+function nextBoard(){
+  var pz=state.pz;if(!pz)return;
+  var b=puzzleBoard(pz.holes.map(function(x){return x.id}));
+  pz.holes=b.holes;pz.tray=b.tray;pz.found=0;pz.sel=null;pz.wrong=0;pz.bad={};pz.b++;
+  render();say('Next board! Fit the shapes!');
 }
 function selectPiece(el){
   var pz=state.pz;if(!pz)return;
@@ -1763,11 +1838,11 @@ function tryPlace(pieceId,holeEl){
     var svg=holeEl.querySelector('.shp');if(svg)svg.style.fill=PIECE_COLORS[pieceId];
     var hl=holeEl.querySelector('.hl');
     if(hl)hl.innerHTML='<b>'+shape.en+'</b><i lang="az">'+shape.az+'</i>';
-    pz.found++;pz.wrong=0;state.stars=pz.found;
+    pz.found++;pz.wrong=0;state.stars++;
     addStar();hopFox();sfx('right');confetti(14);
     sayParts(praiseParts(shape));
     var my=rid;
-    if(pz.found>=pz.holes.length)setTimeout(function(){if(my===rid)finish()},1800);
+    if(pz.found>=pz.holes.length)setTimeout(function(){if(my!==rid)return;if(pz.b<pz.boards-1)nextBoard();else finish()},1800);
   }else{
     if(!pz.bad[pieceId]){pz.bad[pieceId]=1;rec(pieceId,false)}
     pz.wrong++;
@@ -1784,8 +1859,11 @@ function tryPlace(pieceId,holeEl){
 
 /* --- simon says --- */
 function startSimon(){
-  var cmds=shuffle(SIMON).slice(0,6).map(function(c){return {c:c,says:true}});
-  shuffle([1,2,3,4,5]).slice(0,2).forEach(function(i){cmds[i].says=false});
+  var n=Math.max(6,N()),list=[];
+  while(list.length<n)list=list.concat(shuffle(SIMON));
+  var cmds=list.slice(0,n).map(function(c){return {c:c,says:true}});
+  var idx=[];for(var q=1;q<n;q++)idx.push(q);
+  shuffle(idx).slice(0,Math.max(2,Math.round(n*0.3))).forEach(function(i){cmds[i].says=false});
   state.sm={cmds:cmds,i:0};state.total=cmds.length;state.stars=0;state.topic='body';
   go('simon');
   var my=rid;
@@ -1844,19 +1922,24 @@ function feedFly(el){
 }
 
 /* --- hidden objects --- */
-function startHunt(){
-  var sc=rnd(HUNT),cells=[];
+function huntSetup(h){
+  var sc=rnd(HUNT.filter(function(x){return !h.last||x.id!==h.last})),cells=[];
   for(var r=0;r<3;r++)for(var c=0;c<5;c++)cells.push([c,r]);
   var cs=shuffle(cells);
-  var objs=shuffle(sc.items).map(function(it,i){
+  h.sc=sc;h.last=sc.id;
+  h.objs=shuffle(sc.items).map(function(it,i){
     return {e:it.e,en:it.en,az:it.az,x:(cs[i][0]+0.5)/5*100+(Math.random()*8-4),y:(cs[i][1]+0.5)/3*100+(Math.random()*10-5)};
   });
-  var targets=shuffle(objs.map(function(_,i){return i})).slice(0,5);
-  state.hn={sc:sc,objs:objs,targets:targets,k:0,found:{},wrong:0};
-  state.total=5;state.stars=0;state.topic='mix';
+  h.targets=shuffle(h.objs.map(function(_,i){return i})).slice(0,5);
+  h.k=0;h.found={};h.wrong=0;
+}
+function startHunt(){
+  var h={rooms:Math.min(3,Math.ceil(N()/5)),r:0,wrong:0};
+  huntSetup(h);state.hn=h;
+  state.total=5*h.rooms;state.stars=0;state.topic='mix';
   go('hunt');
   var my=rid;
-  setTimeout(function(){if(my===rid)say('Find the '+objs[targets[0]].en+'!')},500);
+  setTimeout(function(){if(my===rid)say('Find the '+h.objs[h.targets[0]].en+'!')},500);
 }
 function viewHunt(){
   var h=state.hn,t=h.objs[h.targets[h.k]];
@@ -1880,7 +1963,10 @@ function huntTap(i,el){
     setTimeout(function(){
       if(my!==rid)return;
       h.k++;h.wrong=0;state.locked=false;
-      if(h.k>=h.targets.length)finish();
+      if(h.k>=h.targets.length){
+        if(h.r<h.rooms-1){h.r++;huntSetup(h);render();setTimeout(function(){if(my===rid)say('A new room! Find the '+h.objs[h.targets[h.k]].en+'!')},300)}
+        else finish();
+      }
       else{render();setTimeout(function(){if(my===rid)say('Find the '+h.objs[h.targets[h.k]].en+'!')},300)}
     },1900);
   }else{
@@ -1896,10 +1982,16 @@ function huntTap(i,el){
 
 /* --- mini story --- */
 function startStory(){
-  var n=stats.games.story||0;
-  var story=STORIES[n%STORIES.length];
-  state.st={story:story,i:0,ans:false};
-  state.total=story.scenes.length;state.stars=0;state.topic='mix';
+  var n=stats.games.story||0,count=N()<8?1:(N()<15?2:3),scenes=[];
+  for(var k=0;k<count;k++){
+    var sty=STORIES[(n*count+k)%STORIES.length];
+    sty.scenes.forEach(function(sc){
+      var c={};for(var key in sc)c[key]=sc[key];
+      c._t={title:sty.title,az:sty.az};scenes.push(c);
+    });
+  }
+  state.st={story:{title:scenes[0]._t.title,az:scenes[0]._t.az,scenes:scenes},i:0,ans:false};
+  state.total=scenes.length;state.stars=0;state.topic='mix';
   go('story');
   var my=rid;
   setTimeout(function(){if(my===rid)sayScene()},500);
@@ -1920,7 +2012,7 @@ function viewStory(){
     :'';
   var last=st.i>=st.story.scenes.length-1;
   return topbar(starsBox('Story'))
-  +'<div class="title" style="font-size:22px">'+st.story.title+'<small lang="az">'+st.story.az+'</small></div>'
+  +'<div class="title" style="font-size:22px">'+(sc._t||st.story).title+'<small lang="az">'+(sc._t||st.story).az+'</small></div>'
   +'<div class="sart" aria-hidden="true">'+sc.a+'</div>'
   +'<div class="stxt"><button class="btn say" data-action="ssay" aria-label="Read it">🔊</button><p>'+text+'</p></div>'
   +opts
@@ -1952,10 +2044,11 @@ function storyNext(){
 
 /* --- tracing letters and numbers --- */
 function startTrace(){
-  var digits=shuffle('123456789'.split('')).slice(0,2);
-  var letters=shuffle('ABCDEFHILOTUVXZSMNWKJPRGYQ'.split('')).slice(0,3);
+  var nd=Math.min(9,Math.round(N()*0.4)),nl=Math.min(26,N()-nd);
+  var digits=shuffle('123456789'.split('')).slice(0,nd);
+  var letters=shuffle('ABCDEFHILOTUVXZSMNWKJPRGYQ'.split('')).slice(0,nl);
   state.tr={items:shuffle(digits.concat(letters)),i:0};
-  state.total=5;state.stars=0;state.topic='mix';
+  state.total=state.tr.items.length;state.stars=0;state.topic='mix';
   go('trace');
   var my=rid;
   setTimeout(function(){if(my===rid)sayTrace()},500);
@@ -2044,7 +2137,7 @@ function traceNext(){
 /* --- balloon pop --- */
 var BALLOON_COLORS=['#FF8FA3','#7FD6F5','#FFD54A','#8EDB7B','#C2A8FF','#FFA96B'];
 function startBalloon(){
-  state.bl={qs:buildRound('mix'),i:0,wrong:0};
+  state.bl={qs:buildRound('mix',N(),4),i:0,wrong:0};
   state.total=state.bl.qs.length;state.stars=0;state.topic='mix';
   go('balloon');
   var my=rid;
@@ -2118,10 +2211,14 @@ function bpop(btn){
 
 /* --- catch it --- */
 function startCatch(){
-  var tops=shuffle(TOPIC_ORDER).slice(0,2);
-  var targets=tops.map(function(tp){return pickTargets(TOPICS[tp].items,1)[0]});
-  state.ct={targets:targets,k:0,caught:0,items:[],x:50,last:0,spawn:0.4,said:0};
-  state.total=6;state.stars=0;state.topic='mix';
+  var nt=Math.max(2,Math.ceil(N()/3)),tops=[],targets=[];
+  while(tops.length<nt)tops=tops.concat(shuffle(TOPIC_ORDER));
+  tops.slice(0,nt).forEach(function(tp){
+    var it=pickTargets(TOPICS[tp].items,3).filter(function(x){return !targets.length||x.id!==targets[targets.length-1].id})[0];
+    targets.push(it);
+  });
+  state.ct={targets:targets,k:0,caught:0,total:nt*3,items:[],x:50,last:0,spawn:0.4,said:0};
+  state.total=nt*3;state.stars=0;state.topic='mix';
   go('catch');
   var my=rid;
   setTimeout(function(){if(my===rid)say('Catch the '+targets[0].en+'!')},500);
@@ -2148,7 +2245,7 @@ function spawnFall(sc,c){
   el.style.left=x.toFixed(1)+'%';el.style.top='-8%';
   el.innerHTML=face(it,false);
   sc.appendChild(el);
-  c.items.push({el:el,it:it,x:x,y:-8,v:26+Math.random()*14+c.k*4,done:false});
+  c.items.push({el:el,it:it,x:x,y:-8,v:26+Math.random()*14+Math.min(c.k,3)*4,done:false});
 }
 function catchItem(f,i){
   var c=state.ct,t=c.targets[c.k];
@@ -2159,15 +2256,15 @@ function catchItem(f,i){
     c.caught++;state.stars++;
     rec(statKey(t),true);
     addStar();hopFox();sfx('right');confetti(8);
-    if(c.caught>=6){
+    if(c.caught>=c.total){
       state.locked=true;say(praise());
       var my=rid;
       setTimeout(function(){if(my===rid)finish()},1300);
-    }else if(c.caught===3){
-      c.k=1;
+    }else if(c.caught%3===0){
+      c.k++;
       c.items.forEach(function(g){if(g.el.parentNode)g.el.parentNode.removeChild(g.el)});
       c.items=[];
-      var t2=c.targets[1],w=document.getElementById('ctw'),a=document.getElementById('cta'),sc=document.getElementById('cscene');
+      var t2=c.targets[c.k],w=document.getElementById('ctw'),a=document.getElementById('cta'),sc=document.getElementById('cscene');
       if(w)w.textContent='Catch the '+t2.en+'!';
       if(a)a.textContent=t2.az;
       if(sc)sc.dataset.t=t2.id;
@@ -2198,6 +2295,214 @@ function catchFrame(my,ts){
     }
   }
   requestAnimationFrame(function(t2){catchFrame(my,t2)});
+}
+
+/* --- custom words (parent) --- */
+function cleanTxt(x){return String(x||'').replace(/[<>&"'`]/g,'').trim()}
+function viewWords(){
+  var quick=['🧸','🚗','🚂','⚽','🐕','🐈','👶','👩','👨','👵','👴','🏠','🍪','🥛'];
+  var list=MINE.map(function(m){
+    return '<span class="chip">'+face(m,false)+'<span>'+esc(m.en)+'<br><small>'+esc(m.az||'')+'</small></span><button class="btn" data-action="mdel" data-id="'+m.id+'" style="padding:2px 10px;font-size:14px;box-shadow:none" aria-label="Sil">✕</button></span>';
+  }).join('');
+  return '<div class="bar"><button class="btn ibtn" data-action="parent" aria-label="Geri">⬅</button><span></span>'+muteBtn()+'</div>'
+  +'<div class="title">Fərdi sözlər<small lang="az">Uşağın öz sözləri. Ən azı 3 söz olanda oyunlarda "My words" mövzusu görünür.</small></div>'
+  +'<div class="pcard"><input class="inp" id="mwEn" placeholder="English word (məs. teddy)" maxlength="20" autocomplete="off" aria-label="English word">'
+  +'<input class="inp" id="mwAz" placeholder="Azərbaycanca (istəyə bağlı)" maxlength="24" autocomplete="off" aria-label="Azərbaycanca" style="margin-top:12px;font-size:22px">'
+  +'<p>Şəkil: emoji seçin və ya şəkil yükləyin</p>'
+  +'<div class="opts">'+quick.map(function(e){return '<button class="btn" data-action="memoji" data-e="'+e+'" style="font-size:26px;padding:6px 10px">'+e+'</button>'}).join('')+'</div>'
+  +'<div class="opts"><span id="mwShow" style="font-size:44px;line-height:1">⭐</span><label class="btn">📷 Şəkil<input type="file" id="mwPhoto" accept="image/*" style="display:none"></label></div>'
+  +'<div class="opts"><button class="btn primary" data-action="msave" style="background:var(--sun)">+ Əlavə et</button></div><p class="err" id="mwErr"></p></div>'
+  +'<div class="pcard"><h3>Sözlərim ('+MINE.length+')</h3>'+(list?'<div class="chips">'+list+'</div>':'<p>Hələ söz yoxdur.</p>')+'</div>';
+}
+function processPhoto(file,cb){
+  var rd=new FileReader();
+  rd.onload=function(){
+    var img=new Image();
+    img.onload=function(){
+      try{
+        var S=160,cv=document.createElement('canvas');cv.width=cv.height=S;
+        var cx=cv.getContext('2d'),m=Math.min(img.width,img.height);
+        cx.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S);
+        cb(cv.toDataURL('image/jpeg',0.8));
+      }catch(e){cb('')}
+    };
+    img.onerror=function(){cb('')};
+    img.src=rd.result;
+  };
+  rd.onerror=function(){cb('')};
+  rd.readAsDataURL(file);
+}
+function saveWord(){
+  var en=cleanTxt((document.getElementById('mwEn')||{}).value),az=cleanTxt((document.getElementById('mwAz')||{}).value);
+  var err=document.getElementById('mwErr');
+  function bad(m){if(err)err.textContent=m}
+  if(!en){bad('Əvvəlcə ingilis sözünü yazın.');return}
+  if(MINE.length>=24){bad('Maksimum 24 söz əlavə etmək olar.');return}
+  if(MINE.some(function(m){return m.en.toLowerCase()===en.toLowerCase()})){bad('Bu söz artıq var.');return}
+  var mw=state.mw||{e:'⭐',img:''};
+  MINE.push({id:'my_'+Date.now().toString(36),kind:'mine',en:en,az:az,e:mw.e||'⭐',img:mw.img||''});
+  store.set('ww_mine',MINE);
+  state.mw={e:'⭐',img:''};
+  render();toast('Əlavə olundu ✓');say(en,0.8);
+}
+
+/* --- backup and restore --- */
+function readAllClips(cb){
+  if(!idb){cb([]);return}
+  var out=[],pending=[];
+  try{
+    var req=idb.transaction('clips','readonly').objectStore('clips').openCursor();
+    req.onsuccess=function(){
+      var c=req.result;
+      if(c){pending.push({key:c.key,blob:c.value});c.continue();return}
+      if(!pending.length){cb([]);return}
+      var left=pending.length;
+      pending.forEach(function(pp){
+        var fr=new FileReader();
+        fr.onload=function(){out.push({key:pp.key,data:fr.result});if(--left===0)cb(out)};
+        fr.onerror=function(){if(--left===0)cb(out)};
+        fr.readAsDataURL(pp.blob);
+      });
+    };
+    req.onerror=function(){cb([])};
+  }catch(e){cb([])}
+}
+function makeBackup(cb){
+  var keys={};
+  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('ww_')===0)keys[k]=localStorage.getItem(k)}}catch(e){}
+  readAllClips(function(list){cb({app:'word-woods',v:1,date:today(),keys:keys,clips:list})});
+}
+function downloadBackup(){
+  store.set('ww_lastbk',today());
+  makeBackup(function(data){
+    try{
+      var blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);a.download='word-woods-backup-'+today()+'.json';
+      document.body.appendChild(a);a.click();
+      setTimeout(function(){try{URL.revokeObjectURL(a.href)}catch(e){}a.remove()},1500);
+      toast('Nüsxə endirildi ✓');
+      if(state.screen==='parent')render();
+    }catch(e){toast('Endirmək alınmadı')}
+  });
+}
+function dataUrlToBlob(u){
+  var parts=u.split(','),mime=(parts[0].match(/:(.*?);/)||[])[1]||'audio/webm';
+  var bin=atob(parts[1]),arr=new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+  return new Blob([arr],{type:mime});
+}
+function restoreBackup(file){
+  if(!file)return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    var data;
+    try{data=JSON.parse(fr.result)}catch(e){toast('Fayl oxunmadı');return}
+    if(!data||data.app!=='word-woods'||!data.keys){toast('Bu, Word Woods nüsxəsi deyil');return}
+    try{Object.keys(data.keys).forEach(function(k){if(k.indexOf('ww_')===0)localStorage.setItem(k,data.keys[k])})}
+    catch(e){toast('Yadda saxlamaq alınmadı');return}
+    var list=Array.isArray(data.clips)?data.clips:[],left=list.length;
+    function done(){toast('Bərpa edildi ✓');setTimeout(function(){try{location.reload()}catch(e){}},900)}
+    if(!left){done();return}
+    list.forEach(function(c){
+      try{saveClip(c.key,dataUrlToBlob(c.data),function(){if(--left===0)done()})}
+      catch(e){if(--left===0)done()}
+    });
+  };
+  fr.onerror=function(){toast('Fayl oxunmadı')};
+  fr.readAsText(file);
+}
+
+/* --- say it: repeat after me --- */
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+var recog=null;
+var HOMO={two:['to','too','2'],four:['for','4'],eight:['ate','8'],one:['won','1'],three:['3'],five:['5'],six:['6'],seven:['7'],nine:['9'],ten:['10'],red:['read'],pear:['pair','pare'],eye:['i','aye'],blue:['blew'],ear:['year']};
+function heard(it,alts){
+  var w=it.en.toLowerCase(),ok=[w].concat(HOMO[w]||[]);
+  return alts.some(function(a){return a.split(/[^a-z0-9]+/).some(function(tok){return ok.indexOf(tok)>-1})});
+}
+function listenOnce(cb){
+  if(!SR){cb('unsupported',[]);return}
+  try{
+    var r=new SR(),fin=false;
+    r.lang='en-US';r.interimResults=false;r.maxAlternatives=5;r.continuous=false;
+    function end(st,a){if(!fin){fin=true;recog=null;cb(st,a||[])}}
+    r.onresult=function(e){
+      var alts=[];
+      for(var i=0;i<e.results.length;i++)for(var j=0;j<e.results[i].length;j++)alts.push(String(e.results[i][j].transcript).toLowerCase());
+      end('ok',alts);
+    };
+    r.onerror=function(e){
+      var er=e&&e.error;
+      end(er==='no-speech'||er==='aborted'?'nospeech':(er==='not-allowed'||er==='service-not-allowed'?'denied':'error'));
+    };
+    r.onend=function(){end('nospeech')};
+    recog=r;r.start();
+  }catch(err){cb('error',[])}
+}
+function startRepeat(){
+  var items=[],n=N();
+  while(items.length<n){
+    shuffle(TOPIC_ORDER).forEach(function(tp){if(items.length<n)items.push(pickTargets(TOPICS[tp].items,1)[0])});
+  }
+  state.rp={items:items,i:0,tries:0,busy:false,manual:!SR};
+  state.total=items.length;state.stars=0;state.topic='mix';
+  go('repeat');
+  var my=rid;
+  setTimeout(function(){if(my===rid)sayRepeat()},500);
+}
+function sayRepeat(){
+  var rp=state.rp;if(!rp)return;
+  sayParts(['Say',W(rp.items[rp.i].en)],0.75);
+}
+function setRst(m){var el=document.getElementById('rst');if(el)el.textContent=m}
+function viewRepeat(){
+  var rp=state.rp,t=rp.items[rp.i];
+  var pic=(t.kind==='animals'||t.kind==='fruits'||t.kind==='body')?t.e:face(t,false);
+  return topbar(starsBox('Words'))
+  +foxRow('<button class="btn say" data-action="rsay" aria-label="Hear it again">🔊</button><div><div class="word">'+t.en+'</div><div class="az" lang="az">'+t.az+'</div></div>')
+  +'<div class="scard"><div class="se" aria-hidden="true">'+pic+'</div><div class="st" id="rst" lang="az">'+(rp.manual?'Sözü ucadan de, sonra yaşıl düyməyə bas':'Mikrofon düyməsinə bas və sözü de')+'</div></div>'
+  +'<div class="sbtns">'
+  +(rp.manual
+    ?'<button class="btn sbtn sgo" data-action="rdone"><b>✅</b>I said it!<small lang="az">Dedim!</small></button>'
+    :'<button class="btn sbtn sgo" id="rmic" data-action="rmic"><b>🎙️</b>Say it!<small lang="az">De!</small></button>')
+  +'<button class="btn sbtn" data-action="rskip"><b>➜</b>Skip<small lang="az">Keç</small></button></div>';
+}
+function rpListen(){
+  var rp=state.rp;
+  if(!rp||rp.busy)return;
+  rp.busy=true;stopSpeech();
+  setRst('Dinləyirəm... de: '+rp.items[rp.i].en);
+  var my=rid;
+  listenOnce(function(st,alts){
+    var r2=state.rp;
+    if(my!==rid||!r2||state.screen!=='repeat')return;
+    r2.busy=false;
+    var t=r2.items[r2.i];
+    if(st==='ok'&&heard(t,alts)){rpSuccess();return}
+    if(st==='denied'||st==='unsupported'||st==='error'){
+      r2.manual=true;render();
+      toast('Səs tanıma işləmədi. Əl ilə rejimə keçdik.');
+      return;
+    }
+    r2.tries++;
+    if(r2.tries>=2){rec(statKey(t),false);say('Good try!');setTimeout(function(){if(my===rid)rpNext()},1400)}
+    else{say('Almost! Listen again.');setRst('Bir daha cəhd et 🙂');setTimeout(function(){if(my===rid)sayRepeat()},1300)}
+  });
+}
+function rpSuccess(){
+  var rp=state.rp;if(!rp)return;
+  var t=rp.items[rp.i],my=rid;
+  if(rp.tries===0&&!rp.manual)rec(statKey(t),true);
+  state.stars++;addStar();hopFox();sfx('right');confetti(14);
+  say(t.en+'! '+praise());
+  setTimeout(function(){if(my===rid)rpNext()},1700);
+}
+function rpNext(){
+  var rp=state.rp;if(!rp||state.screen!=='repeat')return;
+  rp.i++;rp.tries=0;rp.busy=false;
+  if(rp.i>=rp.items.length){finish();return}
+  render();sayRepeat();
 }
 
 /* --- dress up --- */
@@ -2376,6 +2681,22 @@ app.addEventListener('click',function(e){
   else if(a==='tsay')sayTrace();
   else if(a==='tclear')render();
   else if(a==='tskip')traceNext();
+  else if(a==='len'){settings.len=Number(b.dataset.v)||10;store.set('ww_len',settings.len);render();toast(settings.len+' sual ✓')}
+  else if(a==='words'){state.mw={e:'⭐',img:''};go('words')}
+  else if(a==='memoji'){
+    state.mw=state.mw||{e:'⭐',img:''};state.mw.e=b.dataset.e;state.mw.img='';
+    var ms=document.getElementById('mwShow');if(ms)ms.textContent=b.dataset.e;
+  }
+  else if(a==='msave')saveWord();
+  else if(a==='mdel'){
+    var di=MINE.map(function(m){return m.id}).indexOf(b.dataset.id);
+    if(di>-1){MINE.splice(di,1);store.set('ww_mine',MINE);render()}
+  }
+  else if(a==='bkmake')downloadBackup();
+  else if(a==='rsay')sayRepeat();
+  else if(a==='rmic')rpListen();
+  else if(a==='rdone')rpSuccess();
+  else if(a==='rskip')rpNext();
   else if(a==='bpop')bpop(b);
   else if(a==='bsay')sayBalloon();
   else if(a==='csay'){var cc=state.ct;if(cc)say('Catch the '+cc.targets[cc.k].en+'!')}
@@ -2507,6 +2828,19 @@ app.addEventListener('keydown',function(e){
     else if(c.contains('piece')){e.preventDefault();selectPiece(t)}
   }
 });
+app.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.id==='bkfile'&&t.files&&t.files[0]){restoreBackup(t.files[0]);t.value=''}
+  else if(t.id==='mwPhoto'&&t.files&&t.files[0]){
+    processPhoto(t.files[0],function(url){
+      if(!url){toast('Şəkil oxunmadı');return}
+      state.mw=state.mw||{e:'⭐',img:''};state.mw.img=url;
+      var ms=document.getElementById('mwShow');
+      if(ms)ms.innerHTML='<img class="myimg" style="width:56px;height:56px" src="'+url+'" alt="">';
+    });
+    t.value='';
+  }
+});
 app.addEventListener('input',function(e){
   if(e.target.matches&&e.target.matches('[data-role="name2"]'))saveName(e.target.value);
 });
@@ -2581,6 +2915,7 @@ document.addEventListener('visibilitychange',function(){
 });
 window.addEventListener('pagehide',saveStats);
 
+try{if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(function(){})}}catch(e){}
 render();
 if(state.screen==='sleep')say('Time is up! See you tomorrow!');
 })();
